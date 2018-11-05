@@ -1,0 +1,9 @@
+<template name="box">
+  {{> nav}}
+  {{#if currentUser}}
+    {{> leftsidenav}}
+  {{/if}}
+  <div class="box">
+    {{> yield}}
+  </div>
+</template>

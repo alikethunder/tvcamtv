@@ -1,0 +1,12 @@
+<template name="user_search_card">
+  <div class="user_search_card card-panel">
+    <i class="material-icons">face</i>
+    {{profile.name}}
+    {{#unless a_includes contacts.outbound_requests _id}}
+    <i class="material-icons add_to_contacts" data-tooltip="Добавить в контакты" data-position="top" data-delay="8">add</i>
+    {{/unless}}
+    {{#if a_includes contacts.outbound_requests _id}}
+    <i class="material-icons add_to_contacts" data-tooltip="Запрос отправлен" data-position="top" data-delay="8">done</i>
+    {{/if}}
+  </div>
+</template>

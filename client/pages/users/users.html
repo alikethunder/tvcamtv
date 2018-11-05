@@ -1,0 +1,18 @@
+<template name="users">
+  <div class="users">
+    <div class="search_users row">
+      <div class="row">
+        <div class="input-field col s3">
+          <i class="material-icons prefix">account_circle</i>
+          <input id="name" type="text">
+          <label for="name">Имя</label>
+        </div>
+      </div>
+    </div>
+    <div class="users_found">
+      {{#each users}}
+      {{> user_search_card}}
+      {{/each}}
+    </div>
+  </div>
+</template>

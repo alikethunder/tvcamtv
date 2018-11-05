@@ -1,0 +1,24 @@
+<template name="leftsidenav">
+  <div id="leftsidenav" class="leftsidenav_closed">
+    <a href="/user_info" class="user">
+      <i class="material-icons">face</i> 
+      <span class="name">{{currentUser.profile.name}}</span>
+    </a>
+    <ul class="collapsible" data-collapsible="expandable">
+      <li>
+        <div class="collapsible-header"><i class="material-icons">contacts</i>Контакты<i class="material-icons right expand">expand_more</i><i class="material-icons right expand_less">expand_less</i></div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">group_work</i>Группы<i class="material-icons right expand">expand_more</i><i class="material-icons right expand_less">expand_less</i></div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+      </li>
+      <li>
+        <a href="/users" class="collapsible-header collapsible_link"><i class="material-icons">people_outline</i>Юзеры</a>
+      </li>
+      <li>
+        <a href="/translations" class="collapsible-header collapsible_link"><i class="material-icons">screen_share</i>Трансляции</a>
+      </li>
+    </ul>
+  </div>
+</template>

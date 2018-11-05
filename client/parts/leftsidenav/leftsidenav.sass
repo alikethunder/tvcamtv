@@ -1,0 +1,43 @@
+@import '../../config/constants.scss'
+
+$width: 310px
+
+#leftsidenav
+  color: $secondary-color
+  height: calc(100vh - #{$navbar-height})
+  width: $width
+  position: fixed
+  left: 0
+  z-index: 999
+  background-color: lighten($background, 3%)
+  transition: left 0.3s ease-in-out
+  border-right: 1px solid $primary-color
+  &.leftsidenav_closed
+    left: -$width
+  a
+    color: $secondary-color
+  .collapsible
+    margin: 0
+    .collapsible-body
+      padding: 5px
+    .collapsible-header
+      padding: 7px
+      line-height: 1.7
+      .expand
+        display: block
+      .expand_less
+        display: none
+      &.active
+        .expand
+          display: none
+        .expand_less
+          display: block
+  .user
+    color: $primary-color
+    height: 45px
+    display: flex
+    padding: 7px
+    padding-left: 11px
+    align-items: center
+    i
+      margin-right: 17px
