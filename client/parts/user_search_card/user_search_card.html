@@ -3,10 +3,16 @@
     <i class="material-icons">face</i>
     {{profile.name}}
     {{#unless a_includes contacts.outbound_requests _id}}
-    <i class="material-icons add_to_contacts" data-tooltip="Добавить в контакты" data-position="top" data-delay="8">add</i>
+    {{#if a_includes contacts.inbound_requests _id}}
+    <i class="material-icons accept_add_to_contacts waves-effect action" data-tooltip="Принять" data-position="top" data-delay="8" data-id="{{_id}}">check</i>
+    <i class="material-icons deny_add_to_contacts waves-effect action" data-tooltip="Отклонить" data-position="top" data-delay="8" data-id="{{_id}}">cancel</i>
+    {{else}}
+    <i class="material-icons add_to_contacts waves-effect action" data-tooltip="Добавить в контакты" data-position="top" data-delay="8" data-id="{{_id}}">add</i>
+    {{/if}}
     {{/unless}}
     {{#if a_includes contacts.outbound_requests _id}}
-    <i class="material-icons add_to_contacts" data-tooltip="Запрос отправлен" data-position="top" data-delay="8">done</i>
+    <i class="material-icons cancel_add_to_contacts waves-effect action" data-tooltip="Отменить" data-position="top" data-delay="8" data-id="{{_id}}">cancel</i>
+    <i class="material-icons send waves-effect action" data-tooltip="Запрос отправлен" data-position="top" data-delay="8">send</i>
     {{/if}}
   </div>
 </template>
