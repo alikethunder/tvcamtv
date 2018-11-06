@@ -1,6 +1,5 @@
-Template.nav.onRendered(function(){
+Template.nav.onCreated(function(){
   let t = this;
-  
 });
 
 Template.nav.events({

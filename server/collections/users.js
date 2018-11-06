@@ -15,3 +15,8 @@ Meteor.publish('users', function(name){
 Meteor.publish('user_self', function(){
   return Meteor.users.find({_id: this.userId})
 });
+
+Meteor.publish('contacts', function(){
+  let me = Meteor.user();
+  return Meteor.users.find({_id: {$in: [...me.contacts.contacts, ...me.contacts.inbound_requests, ...me.contacts.outbound_requests, ...me.contacts.blocked_users]}});
+});

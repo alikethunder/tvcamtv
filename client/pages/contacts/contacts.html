@@ -1,0 +1,35 @@
+<template name="contacts">
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#contacts">Контакты</a></li>
+        <li class="tab col s3"><a href="#outbound">Исходящие приглашения</a></li>
+        <li class="tab col s3"><a href="#inbound">Входящие приглашения</a></li>
+        <li class="tab col s3"><a href="#blocked">Заблокированные</a></li>
+      </ul>
+    </div>
+    <div class="search">
+
+    </div>
+    <div id="contacts" class="col s12">
+      {{#each contacts}}
+      {{> user_search_card}}
+      {{/each}}
+    </div>
+    <div id="outbound" class="col s12">
+      {{#each outbounds}}
+      {{> user_search_card}}
+      {{/each}}
+    </div>
+    <div id="inbound" class="col s12">
+      {{#each inbounds}}
+      {{> user_search_card}}
+      {{/each}}
+    </div>
+    <div id="blocked" class="col s12">
+      {{#each blocked}}
+      {{> user_search_card}}
+      {{/each}}
+    </div>
+  </div>
+</template>

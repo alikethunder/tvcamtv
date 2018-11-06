@@ -29,6 +29,16 @@ Template.user_search_card.events({
       t.$(e.target).tooltip('remove');
     });
   },
+  'click .block_contact'(e, t) {
+    Meteor.call('block_contact', this._id, () => {
+      t.$(e.target).tooltip('remove');
+    });
+  },
+  'click .unblock_contact'(e, t) {
+    Meteor.call('unblock_contact', this._id, () => {
+      t.$(e.target).tooltip('remove');
+    });
+  },
 });
 
 Template.user_search_card.helpers({
