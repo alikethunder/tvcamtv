@@ -1,5 +1,5 @@
 Meteor.methods({
-  'request_add_contact'(_id) {
+  request_add_contact(_id) {
     if (this.userId) {
       let u = Meteor.users.findOne({
         _id

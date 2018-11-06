@@ -1,7 +1,7 @@
 Template.users.onCreated(function(){
   let t = this;
   t.variables = {};
-  t.variables.users = Meteor.subscribe('users');
+  t.variables.users = t.subscribe('users');
 });
 
 Template.users.onRendered(function(){
@@ -24,6 +24,6 @@ Template.users.helpers({
 Template.users.events({
   'keyup #name': _.debounce(function(e, t){
     t.variables.users.stop();
-    t.variables.users = Meteor.subscribe('users', e.target.value);
+    t.variables.users = t.subscribe('users', e.target.value);
   }, 400)
 });
