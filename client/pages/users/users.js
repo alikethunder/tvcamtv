@@ -12,8 +12,6 @@ Template.users.onCreated(function(){
 Template.users.helpers({
   users(){
     let u = Meteor.user();
-    console.log(u)
-    ////Bug
     return u.contacts && Meteor.users.find({_id: {$nin: u.contacts.contacts, $not: u._id, $nin: u.contacts.blocked_users}}).fetch()
   }
 });

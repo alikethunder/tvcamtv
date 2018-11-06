@@ -3,8 +3,7 @@ let fields = {
   'profile.name': 1
 };
 Meteor.publish('users', function(name){
-  
-  return name ? Meteor.users.find({$text: {$search: name}}, {fields: fields}) : Meteor.users.find({}, {limit: 20, /*BUG*/fields: fields})
+  return name ? Meteor.users.find({$text: {$search: name}}, {fields: fields}) : Meteor.users.find({}, {limit: 20, fields: fields})
 });
 
 Meteor.publish('user_self', function(){
