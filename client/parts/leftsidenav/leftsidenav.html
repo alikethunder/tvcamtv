@@ -1,22 +1,27 @@
 <template name="leftsidenav">
   <div id="leftsidenav" class="leftsidenav_closed">
     <a href="/client" class="client">
-      <i class="material-icons">face</i> 
-      <span class="name">{{currentUser.profile.name}}</span>
+      <i class="material-icons">face</i>
+      <span class="name">
+        {{#if currentUser.profile.name}}
+        {{currentUser.profile.name}}
+        {{else}}
+        Профиль
+        {{/if}}
+      </span>
     </a>
     <ul class="collapsible" data-collapsible="expandable">
       <li>
-        <a href="/contacts" class="collapsible-header collapsible_link"><i class="material-icons">contacts</i>Контакты</a>
+        <a href="/add_cam" class="collapsible-header collapsible_link"><i class="material-icons">video_call</i>Добавить
+          камеру</a>
       </li>
       <li>
-        <a href="/groups" class="collapsible-header collapsible_link"><i class="material-icons">group_work</i>Группы</a>
+        <a href="/cam" class="collapsible-header collapsible_link"><i class="material-icons">videocam</i>Камера</a>
       </li>
       <li>
-        <a href="/users" class="collapsible-header collapsible_link"><i class="material-icons">people_outline</i>Юзеры</a>
+        <a href="/cams" class="collapsible-header collapsible_link"><i class="material-icons">video_label</i>Камеры</a>
       </li>
-      <li>
-        <a href="/translations" class="collapsible-header collapsible_link"><i class="material-icons">screen_share</i>Трансляции</a>
-      </li>
+
     </ul>
   </div>
 </template>

@@ -1,4 +1,4 @@
-Accounts.onCreateUser(function (options, ) {
+Accounts.onCreateUser(function (options, user) {
   if (options.profile && user.services) {
     let service = _.keys(user.services)[0];
     let email = user.services[service].email;
@@ -47,11 +47,6 @@ Accounts.onCreateUser(function (options, ) {
     }
   }
   user.profile = options.profile || {};
-
-  user.contacts.contacts = [];
-  user.contacts.outbound_requests = [];
-  user.contacts.inbound_requests = [];
-  user.contacts.blocked_users = [];
 
   return user;
 });

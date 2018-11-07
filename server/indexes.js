@@ -1,1 +1,0 @@
-Meteor.users.rawCollection().createIndex({'profile.name': 'text'});
