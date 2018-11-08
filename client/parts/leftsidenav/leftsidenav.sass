@@ -19,14 +19,22 @@ $width: 310px
   .collapsible
     margin: 0
     .collapsible-body
-      padding: 5px
+      padding: 0
+      ul
+        li
+          padding-left: 30px
+          border-bottom: 0.5px solid $collapsible-border-color
+          .collapsible_link
+            color: lighten($secondary-color, 9%)
     .collapsible-header
       padding: 7px
       line-height: 1.7
       .expand
         display: block
+        margin-left: auto
       .expand_less
         display: none
+        margin-left: auto
       &.active
         .expand
           display: none

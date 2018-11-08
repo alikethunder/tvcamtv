@@ -1,4 +1,4 @@
-Template.add_device.onCreated(function () {
+Template.add_stream.onCreated(function () {
   let t = this;
   t.variables = {
     devices: new ReactiveVar({})
@@ -40,12 +40,12 @@ Template.add_device.onCreated(function () {
   }
 });
 
-Template.add_device.onRendered(function () {
+Template.add_stream.onRendered(function () {
   let t = this;
 
 });
 
-Template.add_device.events({
+Template.add_stream.events({
   'change select'(e, t) {
     let c = t.variables.constraints.get();
     c[e.target.id] = !!e.target.value ? {
@@ -55,15 +55,24 @@ Template.add_device.events({
     t.start();
   },
   'click .add_device_btn'(e, t){
-    
+    let st = t.variables.constraints.get();
+    if (st.audio || st.video){
+      st.name = t.$('#name').val();
+      st.deviceId = localStorage.getItem('deviceId');
+      st.streamId = new Mongo.ObjectID()._str;
+      Meteor.call('add_stream', st);
+    }
   }
 });
 
-Template.add_device.helpers({
+Template.add_stream.helpers({
   video() {
     return Template.instance().variables.devices.get()['videoinput']
   },
   audio() {
     return Template.instance().variables.devices.get()['audioinput']
+  },
+  deviceId(){
+    return localStorage.getItem('deviceId')
   }
 });

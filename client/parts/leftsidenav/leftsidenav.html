@@ -12,13 +12,20 @@
     </a>
     <ul class="collapsible" data-collapsible="expandable">
       <li>
-        <a href="/add_device" class="collapsible-header collapsible_link"><i class="material-icons">video_call</i>Добавить
-          устройство</a>
+        <a href="/add_stream" class="collapsible-header collapsible_link"><i class="material-icons">video_call</i>Добавить
+          канал</a>
       </li>
       <li>
-        <div class="collapsible-header"><i class="material-icons">videocam</i>Устройства</div>
+        <div class="collapsible-header"><i class="material-icons">videocam</i>Каналы<i class="material-icons expand">expand_more</i><i
+            class="material-icons expand_less">expand_less</i></div>
         <div class="collapsible-body">
-          <span>Lorem ipsum dolor sit amet.</span>
+          <ul>
+            {{#each streams}}
+            <li>
+              <a href="/stream/{{streamId}}" class="collapsible_link">{{#if name}}{{name}}{{else}}канал {{@index}}{{/if}}</a>
+            </li>
+            {{/each}}
+          </ul>
         </div>
       </li>
       <li>
