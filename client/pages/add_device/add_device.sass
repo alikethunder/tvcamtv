@@ -1,3 +1,4 @@
+@import "../../config/constants.scss"
 .add_device
   display: flex
   flex-direction: column
@@ -10,7 +11,18 @@
     flex-direction: row
     justify-content: space-around
     flex-wrap: wrap
+    align-items: center
     .input-field
+      margin-left: 5px
+      margin-right: 5px
       label
         left: 0
         font-size: 17px
+    .btn
+      margin: 5px
+      margin-bottom: 9px
+  video
+    background-color: $primary-color
+    width: 640px
+    max-width: 70vw
+    align-self: center

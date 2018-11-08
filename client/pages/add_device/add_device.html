@@ -3,7 +3,7 @@
     <h5>Добавить устройство</h5>
     <div class="form">
       <div class="input-field col s3">
-        <select>
+        <select id="video">
           <option value="" selected>Без видео</option>
           {{#each video}}
           <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}камера {{@index}}{{/if}}</option>
@@ -12,14 +12,16 @@
         <label>Выбрать камеру</label>
       </div>
       <div class="input-field col s3">
-          <select>
-            <option value="" selected>Без аудио</option>
-            {{#each audio}}
-            <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
-            {{/each}}
-          </select>
-          <label>Выбрать аудиовход</label>
-        </div>
+        <select id="audio">
+          <option value="" selected>Без аудио</option>
+          {{#each audio}}
+          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
+          {{/each}}
+        </select>
+        <label>Выбрать аудиовход</label>
+      </div>
+      <a class="waves-effect waves-light btn add_device_btn"><i class="material-icons left">check</i>Добавить</a>
     </div>
+    <video id="output" autoplay playsinline></video>
   </div>
 </template>
