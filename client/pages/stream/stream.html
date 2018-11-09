@@ -9,18 +9,18 @@
       </div>
       <div class="input-field col s3">
         <select id="video">
-          <option value="" selected="{{isEqual '' stream.video.deviceId}}">{{#if video}}Без видео{{else}}Нет доступных устройств{{/if}}</option>
+          <option value="" selected="{{isEqual '' stream.constraints.video.deviceId}}">{{#if video}}Без видео{{else}}Нет доступных устройств{{/if}}</option>
           {{#each video}}
-          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.video.deviceId}}">{{#if label}}{{label}}{{else}}камера {{@index}}{{/if}}</option>
+          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.constraints.video.deviceId}}">{{#if label}}{{label}}{{else}}камера {{@index}}{{/if}}</option>
           {{/each}}
         </select>
         <label>Выбрать камеру</label>
       </div>
       <div class="input-field col s3">
         <select id="audio">
-          <option value="" selected="{{isEqual '' stream.audio.deviceId}}">{{#if audio}}Без аудио{{else}}Нет доступных устройств{{/if}}</option>
+          <option value="" selected="{{isEqual '' stream.constraints.audio.deviceId}}">{{#if audio}}Без аудио{{else}}Нет доступных устройств{{/if}}</option>
           {{#each audio}}
-          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.audio.deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
+          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.constraints.audio.deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
           {{/each}}
         </select>
         <label>Выбрать аудиовход</label>

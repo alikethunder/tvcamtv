@@ -1,12 +1,16 @@
 import {
   deviceId
 } from '../../js/deviceId'
+import {
+  start_video
+} from '../../js/start_video'
 Template.stream.onCreated(function () {
   let t = this;
 
   t.variables = {
     devices: new ReactiveVar({})
   };
+  t.stream;
 
   navigator.mediaDevices.enumerateDevices().then((devices) => {
     devices.forEach((device, index) => {
@@ -26,7 +30,12 @@ Template.stream.onCreated(function () {
 });
 
 Template.stream.onRendered(function () {
+  let t = this;
   Materialize.updateTextFields();
+  console.log(Template.stream.__helpers.get('stream').call().constraints);
+  t.variables.constraints = Template.stream.__helpers.get('stream').call().constraints;
+  start_video(t.stream, t.variables.constraints, 'output').then(res => t.stream = res);
+
 });
 
 Template.stream.onDestroyed(function () {
@@ -67,5 +76,12 @@ Template.stream.events({
   },
   'blur #name'(e, t) {
     Meteor.call('update_stream_name', Router.current().params._id, e.target.value);
-  }
+  },
+  'change select'(e, t) {
+    t.variables.constraints[e.target.id] = !!e.target.value ? {
+      deviceId: e.target.value
+    } : false;
+    Meteor.call('update_constraints', Router.current().params._id, t.variables.constraints);
+    start_video(t.stream, t.variables.constraints, 'output').then(res => t.stream = res);
+  },
 });
