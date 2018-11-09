@@ -24,7 +24,6 @@ Template.stream.onCreated(function () {
         }, 0);
       }
     });
-    console.log(t.variables.devices.get())
   });
 
 });
@@ -32,10 +31,18 @@ Template.stream.onCreated(function () {
 Template.stream.onRendered(function () {
   let t = this;
   Materialize.updateTextFields();
-  console.log(Template.stream.__helpers.get('stream').call().constraints);
-  t.variables.constraints = Template.stream.__helpers.get('stream').call().constraints;
-  start_video(t.stream, t.variables.constraints, 'output').then(res => t.stream = res);
+  let s = Template.stream.__helpers.get('stream').call();
+  if (s.deviceId == deviceId) {
+    t.variables.constraints = s.constraints;
+    start_video(t.stream, t.variables.constraints, 'output').then(res => t.stream = res);
 
+    //peer connection
+
+    let p = new RTCPeerConnection();
+    
+  } else {
+
+  }
 });
 
 Template.stream.onDestroyed(function () {
