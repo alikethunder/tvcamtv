@@ -1,9 +1,11 @@
 <template name="box">
   {{> nav}}
+  {{#if Template.subscriptionsReady}}
   {{#if currentUser}}
     {{> leftsidenav}}
   {{/if}}
   <div class="box">
     {{> yield}}
   </div>
+  {{/if}}
 </template>

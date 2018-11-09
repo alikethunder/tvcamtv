@@ -1,5 +1,33 @@
 <template name="stream">
-  <div class="row">
-    
+  <div class="add_device">
+    <h5>{{stream.name}}</h5>
+    {{#if sameDevice stream.deviceId}}
+    <div class="form">
+      <div class="input-field col s3">
+        <input id="name" type="text">
+        <label for="name">Название</label>
+      </div>
+      <div class="input-field col s3">
+        <select id="video">
+          <option value="" selected>{{#if video}}Без видео{{else}}Нет доступных устройств{{/if}}</option>
+          {{#each video}}
+          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}камера {{@index}}{{/if}}</option>
+          {{/each}}
+        </select>
+        <label>Выбрать камеру</label>
+      </div>
+      <div class="input-field col s3">
+        <select id="audio">
+          <option value="" selected>{{#if audio}}Без аудио{{else}}Нет доступных устройств{{/if}}</option>
+          {{#each audio}}
+          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
+          {{/each}}
+        </select>
+        <label>Выбрать аудиовход</label>
+      </div>
+    </div>
+    {{/if}}
+    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>Удалить</a>
+    <video id="output" autoplay playsinline controls></video>
   </div>
 </template>

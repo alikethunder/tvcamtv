@@ -1,1 +1,1 @@
-Meteor.subscribe('user_self');
+//Meteor.subscribe('user_self');
