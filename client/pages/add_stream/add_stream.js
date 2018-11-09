@@ -1,3 +1,6 @@
+import {
+  deviceId
+} from '../../js/deviceId'
 Template.add_stream.onCreated(function () {
   let t = this;
   t.variables = {
@@ -58,9 +61,14 @@ Template.add_stream.events({
     let st = t.variables.constraints.get();
     if (st.audio || st.video){
       st.name = t.$('#name').val();
-      st.deviceId = localStorage.getItem('deviceId');
+      st.deviceId = deviceId;
       st.streamId = new Mongo.ObjectID()._str;
-      Meteor.call('add_stream', st);
+      Meteor.call('add_stream', st, function(err, res){
+        if (!err){
+          Materialize.toast('Канал добавлен', 1000);
+          Router.go(`/stream/${st.streamId}`);
+        }
+      });
     }
   }
 });
@@ -72,7 +80,4 @@ Template.add_stream.helpers({
   audio() {
     return Template.instance().variables.devices.get()['audioinput']
   },
-  deviceId(){
-    return localStorage.getItem('deviceId')
-  }
 });
