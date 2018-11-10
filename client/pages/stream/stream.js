@@ -32,15 +32,38 @@ Template.stream.onRendered(function () {
   let t = this;
   Materialize.updateTextFields();
   let s = Template.stream.__helpers.get('stream').call();
+  console.log(s);
+  const offerOptions = {
+    offerToReceiveAudio: 1,
+    offerToReceiveVideo: 1
+  };
+
   if (s.deviceId == deviceId) {
     t.variables.constraints = s.constraints;
-    start_video(t.stream, t.variables.constraints, 'output').then(res => t.stream = res);
+    start_video(t.stream, t.variables.constraints, 'output').then((res) => {
+      let p = new RTCPeerConnection();
+      t.stream ? t.stream.getTracks().forEach(track=>p.removeTrack(track, t.stream)) : false;
+      t.stream = res;
+      t.stream.getTracks().forEach(track=>p.addTrack(track, t.stream));
+      p.createOffer(offerOptions).then((desc)=>{
+        console.log(desc);
+        p.setLocalDescription(desc);
+        Meteor.call('update_local_peer_desc', EJSON.stringify(desc), s.streamId);
 
-    //peer connection
+      });
+    });
+    //peer connection pc1
 
     let p = new RTCPeerConnection();
     
+    
   } else {
+    // peer connection pc2
+
+    let p = new RTCPeerConnection();
+    p.addEventListener('track', e=>document.getElementById('output').srcObject = e.streams[0]);
+    p.setRemoteDescription(EJSON.parse(s.local_peer_desc)).then(p.createAnswer()).then(ans=>console.log(ans));
+
 
   }
 });
