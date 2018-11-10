@@ -48,41 +48,59 @@ Template.stream.onRendered(function () {
     start_video(t.stream, t.variables.constraints, 'output').then((res) => {
       let p = new RTCPeerConnection();
       //console.log(p);
-      t.stream ? t.stream.getTracks().forEach(track=>p.removeTrack(track, t.stream)) : false;
+      t.stream ? t.stream.getTracks().forEach(track => p.removeTrack(track, t.stream)) : false;
       t.stream = res;
-      t.stream.getTracks().forEach(track=>p.addTrack(track, t.stream));
-      p.addEventListener('icecandidate', function(e){console.log(e)})
-      p.createOffer(offerOptions).then((desc)=>{
+      t.stream.getTracks().forEach(track => p.addTrack(track, t.stream));
+      p.addEventListener('icecandidate', function (e) {
+        console.log(e);
+        p.addIceCandidate(e.candidate)
+      });
+      p.createOffer(offerOptions).then((desc) => {
         console.log(desc);
         p.setLocalDescription(desc);
         Meteor.call('update_local_peer_desc', desc.sdp, s.streamId);
-        Tracker.autorun(()=>{
-          if (s.remote_peer_descs && s.remote_peer_descs.length){
-            p.setRemoteDescription({sdp: s.remote_peer_descs[0], type: 'answer'})
+        Tracker.autorun(() => {
+          if (s.remote_peer_descs && s.remote_peer_descs.length) {
+            p.setRemoteDescription({
+              sdp: s.remote_peer_descs[0],
+              type: 'answer'
+            })
           }
         });
       });
     });
-    
-    
+
+
   } else {
     // peer connection pc2
 
     let p = new RTCPeerConnection();
-    p.addEventListener('track', e=>document.getElementById('output').srcObject = e.streams[0]);
+    p.addEventListener('track', e => document.getElementById('output').srcObject = e.streams[0]);
+    p.addEventListener('icecandidate', function (e) {
+      console.log(e);
+      p.addIceCandidate(e.candidate)
+    });
     //console.log(s.local_peer_desc);
-    p.setRemoteDescription({sdp: s.local_peer_desc, type: 'offer'}).then(()=>{return p.createAnswer()}).then((ans)=>{
+    p.setRemoteDescription({
+      sdp: s.local_peer_desc,
+      type: 'offer'
+    }).then(() => {
+      return p.createAnswer()
+    }).then((ans) => {
       console.log(ans);
       p.setLocalDescription(ans);
-      t.remote_peer_desc = ans.sdp;
-      Meteor.call('update_remote_peer_desc', ans.sdp, s.streamId);
+      t.remote_peer_desc = {
+        _id: new Mongo.ObjectID()._str,
+        sdp: ans.sdp
+      };
+      Meteor.call('update_remote_peer_desc', t.remote_peer_desc, s.streamId);
     });
   }
 });
 
 Template.stream.onDestroyed(function () {
   let t = this;
-  if (t.remote_peer_desc){
+  if (t.remote_peer_desc) {
     Meteor.call('remove_remote_peer_desc', t.remote_peer_desc, s.streamId);
     ///...///
   }
