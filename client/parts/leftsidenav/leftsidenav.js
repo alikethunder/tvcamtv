@@ -1,3 +1,5 @@
+import {Streams} from '../../collections/Streams'
+
 Template.leftsidenav.onCreated(function(){
   let t = this;
   
@@ -11,6 +13,6 @@ Template.leftsidenav.onRendered(function(){
 
 Template.leftsidenav.helpers({
   streams(){
-    return Meteor.user().streams
+    return Streams.find().fetch()
   }
 });

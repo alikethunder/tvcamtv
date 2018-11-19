@@ -50,11 +50,10 @@ Template.add_stream.events({
     if (st.constraints.audio || st.constraints.video) {
       st.name = t.$('#name').val();
       st.deviceId = deviceId;
-      st.streamId = new Mongo.ObjectID()._str;
-      Meteor.call('add_stream', st, function (err, res) {
+      Meteor.call('add_stream', st, function (err, _id) {
         if (!err) {
-          Materialize.toast('Канал добавлен', 1000);
-          Router.go(`/stream/${st.streamId}`);
+          Materialize.toast(`Канал ${st.name} добавлен`, 1000);
+          Router.go(`/stream/${_id}`);
         }
       });
     } else {
