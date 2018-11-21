@@ -12,6 +12,13 @@ import {
 import {
   Peers
 } from '../../collections/Peers'
+import Peer from 'simple-peer';
+
+const peerOptions = {
+  host: 'localhost',
+  port: 1745,
+  path: '/peer'
+};
 
 Template.stream.onCreated(function () {
   let t = this;
@@ -19,12 +26,15 @@ Template.stream.onCreated(function () {
   t.subscribe('stream', Router.current().params._id);
   t.subscribe('peers', Router.current().params._id);
 
+
   window.addEventListener('beforeunload', function () {
     Meteor.call('remove_remote_peer_desc', t.peerId);
   });
+
   t.variables = {
     devices: new ReactiveVar({})
   };
+
   t.stream;
 
   navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -49,83 +59,54 @@ Template.stream.onRendered(function () {
 
   console.log(s);
 
-  const offerOptions = {
-    offerToReceiveAudio: 1,
-    offerToReceiveVideo: 1
-  };
-
-  const configuration = {
-    iceServers: [{
-      urls: 'stun:stun.l.google.com:19302'
-    }]
-  };
-
   if (s.deviceId == deviceId) {
+    /// source pc
+
     t.variables.constraints = s.constraints;
-    let remote_peer_desc = Streams.findOne();
-
-    //peer connection pc1
-
-    let p = new RTCPeerConnection(configuration);
-    start_video(t.stream, t.variables.constraints, 'output').then((res) => {
-      t.stream ? t.stream.getTracks().forEach(track => p.removeTrack(track, t.stream)) : false;
-      t.stream = res;
-      t.stream.getTracks().forEach(track => p.addTrack(track, t.stream));
-      p.addEventListener('icecandidate', function (e) {
-        console.log(e);
-        p.addIceCandidate(e.candidate)
+    start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
+      t.stream = stream;
+      let peer = new Peer({
+        initiator: true,
+        stream: stream
       });
-      p.createOffer(offerOptions).then((desc) => {
-        console.log(desc);
-        p.setLocalDescription(desc);
-        Meteor.call('update_local_peer_desc', desc.sdp, s._id);
 
-
-
-        Tracker.autorun(() => {
-          t.remote_peer = Peers.findOne({
-            streamId: Router.current().params._id
-          });
-          console.log(t.remote_peer);
-          if (t.remote_peer) {
-            p.setRemoteDescription({
-              sdp: t.remote_peer.sdp,
-              type: 'answer'
-            })
-          }
-        });
-
+      peer.on('signal', function (data) {
+        console.log('initiator onsignal : ', data);
+        if(data.type && data.type == 'offer'){
+          Meteor.call('save_initiator_data', s._id, JSON.stringify(data))
+        }
       });
+      Tracker.autorun(() => {
+        let peers = Peers.find({
+          streamId: s._id
+        }).fetch();console.log(peers, peers.length && peers[0].data);
+        if (peers.length && peers[0].data) {
+          peer.signal(JSON.parse(peers[0].data));
+        }
+      });
+
     });
-
 
   } else {
-    // peer connection pc2
+    // receiver pc
+    Meteor.call('add_remote_peer_desc', {
+      streamId: s._id
+    }, function (err, peerId) {
+      let peer = new Peer();
+      console.log(s.data);
+      peer.signal(JSON.parse(s.data));
 
-    let p = new RTCPeerConnection(configuration);
-    p.addEventListener('track', e => document.getElementById('output').srcObject = e.streams[0]);
-    p.addEventListener('icecandidate', function (e) {
-      console.log(e);
-      p.addIceCandidate(e.candidate)
-    });
-    p.setRemoteDescription({
-      sdp: s.sdp,
-      type: 'offer'
-    }).then(() => {
-      return p.createAnswer()
-    }).then((ans) => {
-      console.log(ans);
-      p.setLocalDescription(ans).then((a)=>{
-        t.remote_peer_desc = {
-          deviceId: deviceId,
-          sdp: ans.sdp,
-          streamId: s._id
-        };
-        Meteor.call('add_remote_peer_desc', t.remote_peer_desc, function (err, res) {
-          t.peerId = res;
-        });
+      peer.on('signal', function (data) {
+        console.log('receiver onsignal : ', data);
+        if (data.type && data.type == 'answer'){
+          Meteor.call('save_receiver_data', peerId, JSON.stringify(data))
+        }
       });
-      
+
+      peer.on('stream', function (stream) {
+        console.log('receiver stream : ', stream);
+        document.getElementById('output').srcObject = stream;
+      })
     });
   }
 });
@@ -151,7 +132,6 @@ Template.stream.helpers({
         t.$('select').material_select();
       }, 0)
     }
-
     return deviceId == devId
   },
   video() {

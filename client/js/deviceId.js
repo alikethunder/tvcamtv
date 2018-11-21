@@ -1,3 +1,5 @@
+//// get || set && get unique deviceId
+
 let d = localStorage.getItem('deviceId');
 
 if (!d){
