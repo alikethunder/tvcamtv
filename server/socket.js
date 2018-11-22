@@ -12,21 +12,16 @@ Meteor.startup(() => {
   io.on('connection', function (socket) {
     console.log('%s Peer Connected', socket.id);
     console.log('connected sockets : ', Object.keys(io.sockets.connected));
-    Object.keys(io.sockets.connected).forEach((socketId) => {
-      if (socketId != socket.id) {
-        io.sockets.connected[socketId].emit('new_peer', {
-          id: socket.id
-        });
-      }
+
+    socket.on('new_peer', function (data) {
+      io.sockets.connected[data.socketId].emit('new_peer_connected', {
+        id: socket.id
+      })
     });
 
     socket.on('signal', function (data) {
       //console.log('server socket signal received : ', data);
-      Object.keys(io.sockets.connected).forEach((socketId) => {
-        if (socketId != socket.id) {
-          io.sockets.connected[socketId].emit('signal', data)
-        }
-      });
+      io.sockets.connected[data.socketId].emit('signal', data);
     });
   });
 

@@ -49,26 +49,28 @@ Template.stream.onRendered(function () {
   console.log('stream : ', s);
   const PORT = 8080;
   let socket = require('socket.io-client')(`http://localhost:${PORT}`);
-
+  
   socket.on('connect', function () {
     console.log('Connected to signalling server, self id : %s', socket.id);
 
     if (s.deviceId == deviceId) {
       /// source pc
+      Meteor.call('update_stream_socket', s._id, socket.id);
+
       t.variables.constraints = s.constraints;
       start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
         t.stream = stream;
 
-        socket.on('new_peer', function (data) {
+        socket.on('new_peer_connected', function (receiver_socket) {
           let peer = new Peer({
             initiator: true,
             stream: stream
           });
+          console.log(peer);
           peer.on('signal', function (data) {
             socket.emit('signal', {
               signal: data,
-              id: socket.id,
-              initiator: true
+              socketId: receiver_socket.id, //to 
             });
           });
           socket.on('signal', function (data) {
@@ -79,12 +81,17 @@ Template.stream.onRendered(function () {
       });
     } else {
       // receiver pc
+      //Meteor.call('add_receiver_socket', s._id, socket.id);
+
+      socket.emit('new_peer', {socketId: s.socketId});
+
       let peer = new Peer();
 
       peer.on('signal', function (data) {
         socket.emit('signal', {
           id: socket.id,
-          signal: data
+          signal: data,
+          socketId: s.socketId //to
         })
       });
 
