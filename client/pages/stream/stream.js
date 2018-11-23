@@ -51,6 +51,7 @@ Template.stream.onCreated(function () {
 
 Template.stream.onRendered(function () {
   let t = this;
+
   t.autorun(() => {
     if (Router.current().params._id) {
       Materialize.updateTextFields();
@@ -102,6 +103,20 @@ Template.stream.onRendered(function () {
               document.getElementById('output').srcObject = stream;
             });
           });
+        });
+
+        //reload page if stream constraints changed /// NOT TESTED YET
+        t.autorun(()=>{
+          Streams.find({
+            _id: Router.current().params._id
+          }).observeChanges({
+            changed(id, stream){
+              console.log(stream.constraints);
+              if (stream.constraints){
+                location.reload()
+              }
+            }
+          })
         });
       }
     }
