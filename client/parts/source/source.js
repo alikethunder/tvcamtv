@@ -20,7 +20,7 @@ Template.source.onRendered(function () {
   let t = this;
   const PORT = 8080;
 
-  Tracker.autorun(() => {
+  t.autorun(() => {
 
     //peers to this device streams
     let peers = Peers.find({

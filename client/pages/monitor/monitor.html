@@ -1,3 +1,10 @@
 <template name="monitor">
-  
+  <div class="videos_container">
+    {{#each streams}}
+    <div class="video_container">
+      <div class="video_name">{{name}}</div>
+      <video id="{{_id}}" autoplay playsinline controls></video>
+    </div>
+    {{/each}}
+  </div>
 </template>
