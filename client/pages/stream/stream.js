@@ -105,7 +105,7 @@ Template.stream.onRendered(function () {
           });
         });
 
-        //reload page if stream constraints changed /// NOT TESTED YET
+        //reload page if stream constraints changed
         t.autorun(()=>{
           Streams.find({
             _id: Router.current().params._id
