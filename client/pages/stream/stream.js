@@ -11,14 +11,22 @@ import {
 
 Template.stream.onCreated(function () {
   let t = this;
+  t.autorun(() => {
+    t.subscribe('stream', Router.current().params._id);
+    t.subscribe('peers', Router.current().params._id);
+  });
 
-  t.subscribe('stream', Router.current().params._id);
-  t.subscribe('peers', Router.current().params._id);
-
-
-  /*window.addEventListener('beforeunload', function () {
-    Meteor.call('remove_remote_peer_desc', t.peerId);
-  });*/
+  window.addEventListener('beforeunload', function () {
+    t.peerId && Meteor.call('remove_receiver', t.peerId);
+    t.socket && t.socket.emit('close_connection', {
+      to: t.to
+    });
+    t.stream && t.stream.getTracks().forEach(track => track.stop());
+    delete t.socket;
+    delete t.peerId;
+    delete t.stream;
+    delete t.to
+  });
 
   t.variables = {
     devices: new ReactiveVar({})
@@ -43,72 +51,75 @@ Template.stream.onCreated(function () {
 
 Template.stream.onRendered(function () {
   let t = this;
-  Materialize.updateTextFields();
+  t.autorun(() => {
+    if (Router.current().params._id) {
+      Materialize.updateTextFields();
+      if (t.socket || t.peerId || t.stream) {
+        // close previous collection && clear all its data
+        t.peerId && Meteor.call('remove_receiver', t.peerId);
+        t.socket && t.socket.emit('close_connection', {
+          to: t.to
+        });
+        t.stream && t.stream.getTracks().forEach(track => track.stop());
+        delete t.socket;
+        delete t.peerId;
+        delete t.stream;
+        delete t.to
+      }
 
-  let s = Template.stream.__helpers.get('stream').call();
-  console.log('stream : ', s);
-  const PORT = 8080;
-  let socket = require('socket.io-client')(`http://localhost:${PORT}`);
-  
-  socket.on('connect', function () {
-    console.log('Connected to signalling server, self id : %s', socket.id);
+      let stream = Template.stream.__helpers.get('stream').call();
+      //console.log('stream : ', stream);
 
-    if (s.deviceId == deviceId) {
-      /// source pc
-      Meteor.call('update_stream_socket', s._id, socket.id);
+      if (stream.deviceId == deviceId) {
+        //source pc
+        t.variables.constraints = stream.constraints;
+        start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
+          t.stream = stream;
+        });
+      } else {
+        // receiver pc
+        const PORT = 8080;
+        let socket = require('socket.io-client')(`http://localhost:${PORT}`);
+        socket.on('connect', function () {
+          t.socket = socket;
+          t.peerId = new Mongo.ObjectID()._str;
+          Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, socket.id, function () {
+            let peer = new Peer();
+            peer.on('signal', function (data) {
+              socket.emit('signal', {
+                signal: data,
+                to: t.to, //to
+              })
+            });
 
-      t.variables.constraints = s.constraints;
-      start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
-        t.stream = stream;
+            socket.on('signal', function (data) {
+              peer.signal(data.signal);
+              t.to = data.from;
+            });
 
-        socket.on('new_peer_connected', function (receiver_socket) {
-          let peer = new Peer({
-            initiator: true,
-            stream: stream
-          });
-          console.log(peer);
-          peer.on('signal', function (data) {
-            socket.emit('signal', {
-              signal: data,
-              socketId: receiver_socket.id, //to 
+            peer.on('stream', function (stream) {
+              t.stream = stream;
+              document.getElementById('output').srcObject = stream;
             });
           });
-          socket.on('signal', function (data) {
-            //console.log('initiator socket signal received : ', data);
-            peer.signal(data.signal);
-          });
         });
-      });
-    } else {
-      // receiver pc
-      //Meteor.call('add_receiver_socket', s._id, socket.id);
-
-      socket.emit('new_peer', {socketId: s.socketId});
-
-      let peer = new Peer();
-
-      peer.on('signal', function (data) {
-        socket.emit('signal', {
-          id: socket.id,
-          signal: data,
-          socketId: s.socketId //to
-        })
-      });
-
-      socket.on('signal', function (data) {
-        //console.log('receiver socket signal  received : ', data);
-        peer.signal(data.signal);
-      });
-
-      peer.on('stream', function(stream){
-        document.getElementById('output').srcObject = stream;
-      });
+      }
     }
   });
+
 });
 
 Template.stream.onDestroyed(function () {
   let t = this;
+  t.peerId && Meteor.call('remove_receiver', t.peerId);
+  t.socket && t.socket.emit('close_connection', {
+    to: t.to
+  });
+  t.stream && t.stream.getTracks().forEach(track => track.stop());
+  delete t.socket;
+  delete t.peerId;
+  delete t.stream;
+  delete t.to
 });
 
 Template.stream.helpers({
