@@ -21,7 +21,6 @@ Template.monitor.onCreated(function () {
 
 Template.monitor.onRendered(function () {
   let t = this;
-  console.log(t.streams_cursor.fetch());
 
   const PORT = 8080;
   t.streams_cursor.fetch().forEach((stream, index) => {
