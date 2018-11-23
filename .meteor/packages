@@ -16,9 +16,7 @@ standard-minifier-js@2.4.0    # JS minifier run for production mode
 es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.12.0              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.4.0            # Server-side component of the `meteor shell` command
-
-#autopublish@1.0.7             # Publish all data to the clients (for prototyping)
-#insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
+            # Allow all DB writes from clients (for prototyping)
 fourseven:scss
 iron:router
 materialize:materialize
@@ -32,5 +30,3 @@ webapp@1.7.0
 ostrio:spiderable-middleware
 staringatlights:fast-render
 alanning:roles
-ostrio:files
-underscore@1.0.10

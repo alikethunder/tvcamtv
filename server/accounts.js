@@ -1,6 +1,6 @@
 Accounts.onCreateUser(function (options, user) {
   if (options.profile && user.services) {
-    let service = _.keys(user.services)[0];
+    let service = Object.keys(user.services)[0];
     let email = user.services[service].email;
     let oldUser = email && Meteor.users.findOne({
       "emails.address": email
