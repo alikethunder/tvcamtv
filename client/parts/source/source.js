@@ -28,11 +28,11 @@ Template.source.onRendered(function () {
     }).fetch();
 
     peers.forEach((peer) => {
-      console.log(peer);
+      //console.log(peer);
       //start socket
       let socket = io(`http://localhost:${PORT}`);
       socket.on('connect', function () {
-        console.log(socket.id);
+        //console.log(socket.id);
         navigator.mediaDevices.getUserMedia(peer.constraints)
           .then(function (stream) {
             let source_peer = new Peer({

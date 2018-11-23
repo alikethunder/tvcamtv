@@ -111,7 +111,6 @@ Template.stream.onRendered(function () {
             _id: Router.current().params._id
           }).observeChanges({
             changed(id, stream){
-              console.log(stream.constraints);
               if (stream.constraints){
                 location.reload()
               }
