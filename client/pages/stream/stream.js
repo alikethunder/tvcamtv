@@ -80,20 +80,19 @@ Template.stream.onRendered(function () {
       } else {
         // receiver pc
         const PORT = 8080;
-        let socket = require('socket.io-client')(`http://localhost:${PORT}`);
-        socket.on('connect', function () {
-          t.socket = socket;
+        t.socket = require('socket.io-client')(`http://localhost:${PORT}`);
+        t.socket.on('connect', function () {
           t.peerId = new Mongo.ObjectID()._str;
-          Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, socket.id, function () {
+          Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {
             let peer = new Peer();
             peer.on('signal', function (data) {
-              socket.emit('signal', {
+              t.socket.emit('signal', {
                 signal: data,
                 to: t.to, //to
               })
             });
 
-            socket.on('signal', function (data) {
+            t.socket.on('signal', function (data) {
               peer.signal(data.signal);
               t.to = data.from;
             });
