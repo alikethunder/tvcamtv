@@ -21,7 +21,7 @@ Template.add_stream.onCreated(function () {
         }, 0);
       }
     });
-    console.log(t.variables.devices.get())
+    //console.log(t.variables.devices.get())
   });
 
   t.variables.constraints = {

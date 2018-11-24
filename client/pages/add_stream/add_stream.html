@@ -1,31 +1,31 @@
 <template name="add_stream">
   <div class="add_device">
-    <h5>Добавить канал</h5>
+    <h5>{{t9n 'channel.add'}} {{t9n 'channel.channel'}}</h5>
     <div class="form">
       <div class="input-field col s3">
         <input id="name" type="text">
-        <label for="name">Название</label>
+        <label for="name">{{t9n 'channel.channel_name'}}</label>
       </div>
       <div class="input-field col s3">
         <select id="video">
-          <option value="" selected>{{#if video}}Без видео{{else}}Нет доступных устройств{{/if}}</option>
+          <option value="" selected>{{#if video}}{{t9n 'channel.without_video'}}{{else}}{{t9n 'channel.no_available_devices'}}{{/if}}</option>
           {{#each video}}
-          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}камера {{@index}}{{/if}}</option>
+          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}{{t9n 'channel.video_device'}} {{@index}}{{/if}}</option>
           {{/each}}
         </select>
-        <label>Выбрать камеру</label>
+        <label>{{t9n 'channel.select'}} {{t9n 'channel.video_device'}}</label>
       </div>
       <div class="input-field col s3">
         <select id="audio">
-          <option value="" selected>{{#if audio}}Без аудио{{else}}Нет доступных устройств{{/if}}</option>
+          <option value="" selected>{{#if audio}}{{t9n 'channel.without_audio'}}{{else}}{t9n 'channel.no_available_devices'}}{{/if}}</option>
           {{#each audio}}
-          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
+          <option value="{{deviceId}}">{{#if label}}{{label}}{{else}}{{t9n 'channel.audio_device'}} {{@index}}{{/if}}</option>
           {{/each}}
         </select>
-        <label>Выбрать аудиовход</label>
+        <label>{{t9n 'channel.select'}} {{t9n 'channel.audio_device'}}</label>
       </div>
     </div>
-    <a class="waves-effect waves-light btn add_device_btn"><i class="material-icons left">check</i>Добавить</a>
+    <a class="waves-effect waves-light btn add_device_btn"><i class="material-icons left">check</i>{{t9n 'channel.add'}} {{t9n 'channel.channel'}}</a>
     <video id="output" autoplay playsinline controls></video>
   </div>
 </template>

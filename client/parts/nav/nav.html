@@ -8,12 +8,19 @@
       </ul>
       <a href="/" class="logo left">Simon</a>
       <ul id="nav-mobile" class="right">
+        <li class="lang_cont">
+          <select class="lang">
+            <option value="en">ENG</option>
+            <option value="ru">РУС</option>
+            <option value="uk">УКР</option>
+          </select>
+        </li>
         {{#unless currentUser}}
-        <li><a href="/sign-in">Вход</a></li>
-        <li><a href="/sign-up">Регистрация</a></li>
+        <li><a href="/sign-in">{{t9n 'signIn'}}</a></li>
+        <li><a href="/sign-up">{{t9n 'signUp'}}</a></li>
         {{/unless}}
         {{#if currentUser}}
-        <li><a href="" class="logout">Выйти</a></li>
+        <li><a href="" class="logout">{{t9n 'signOut'}}</a></li>
         {{/if}}
       </ul>
     </div>

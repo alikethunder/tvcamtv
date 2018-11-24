@@ -1,6 +1,5 @@
 Template.screen.onCreated(function(){
-  let t = this;
-  t.subscribe('user_self')
+  let t = this; 
 });
 
 Template.screen.events({

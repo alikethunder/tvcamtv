@@ -5,29 +5,29 @@
     <div class="form">
       <div class="input-field col s3">
         <input id="name" type="text" value="{{stream.name}}">
-        <label for="name">Название</label>
+        <label for="name">{{t9n 'channel.channel_name'}}</label>
       </div>
       <div class="input-field col s3">
         <select id="video">
-          <option value="" selected="{{isEqual '' stream.constraints.video.deviceId}}">{{#if video}}Без видео{{else}}Нет доступных устройств{{/if}}</option>
+          <option value="" selected="{{isEqual '' stream.constraints.video.deviceId}}">{{#if video}} {{t9n 'channel.without_video'}} {{else}} {{t9n 'channel.no_available_devices'}} {{/if}}</option>
           {{#each video}}
-          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.constraints.video.deviceId}}">{{#if label}}{{label}}{{else}}камера {{@index}}{{/if}}</option>
+          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.constraints.video.deviceId}}">{{#if label}}{{label}}{{else}} {{t9n 'channel.video_device'}} {{@index}}{{/if}}</option>
           {{/each}}
         </select>
-        <label>Выбрать камеру</label>
+        <label>{{t9n 'channel.select'}} {{t9n 'channel.video_device'}}</label>
       </div>
       <div class="input-field col s3">
         <select id="audio">
-          <option value="" selected="{{isEqual '' stream.constraints.audio.deviceId}}">{{#if audio}}Без аудио{{else}}Нет доступных устройств{{/if}}</option>
+          <option value="" selected="{{isEqual '' stream.constraints.audio.deviceId}}">{{#if audio}} {{t9n 'channel.without_audio'}} {{else}} {{t9n 'channel.no_available_devices'}} {{/if}}</option>
           {{#each audio}}
-          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.constraints.audio.deviceId}}">{{#if label}}{{label}}{{else}}аудиовход {{@index}}{{/if}}</option>
+          <option value="{{deviceId}}" selected="{{isEqual deviceId stream.constraints.audio.deviceId}}">{{#if label}}{{label}}{{else}} {{t9n 'channel.audio_device'}} {{@index}}{{/if}}</option>
           {{/each}}
         </select>
-        <label>Выбрать аудиовход</label>
+        <label>{{t9n 'channel.select'}} {{t9n 'channel.audio_device'}}</label>
       </div>
     </div>
     {{/if}}
-    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>Удалить</a>
+    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}} {{t9n 'channel.channel'}}</a>
     <video id="output" autoplay playsinline controls></video>
   </div>
 </template>
