@@ -27,6 +27,5 @@ accounts-password@1.5.1
 useraccounts:iron-routing
 useraccounts:materialize
 webapp@1.7.0
-ostrio:spiderable-middleware
 staringatlights:fast-render
 alanning:roles

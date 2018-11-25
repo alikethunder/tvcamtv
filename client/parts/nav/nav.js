@@ -3,7 +3,6 @@ import {Translations} from '../../collections/Translations'
 Template.nav.onCreated(function(){
   let t = this;
   t.l = localStorage.getItem('language') || 'en';
-  t.subscribe('user_self');
   t.subscribe('translations');
   t.autorun(()=>{
     Translations.find().fetch().forEach((language)=>{

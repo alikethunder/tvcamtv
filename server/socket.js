@@ -14,7 +14,7 @@ Meteor.startup(() => {
     });
 
     socket.on('close_connection', function(data){
-      io.sockets.connected[data.to].disconnect();
+      io.sockets.connected[data.to] && io.sockets.connected[data.to].disconnect();
       socket.disconnect();
     });
 
