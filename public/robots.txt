@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /en
+Allow: /ru
+Allow: /uk
+Disallow: /
+Sitemap: http://tvcamtv.com/sitemap.xml
