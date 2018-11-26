@@ -11,6 +11,12 @@ import {
 import {
   ServerDate
 } from '../../../lib/collections/serverDate';
+import {
+  Prices
+} from '../../collections/Prices'
+import {
+  Settings
+} from '../../collections/Settings'
 
 Template.stream.onCreated(function () {
   let t = this;
@@ -35,7 +41,7 @@ Template.stream.onCreated(function () {
     devices: new ReactiveVar({}),
     expired: new ReactiveVar(false)
   };
-
+  t.liqpay_forms = new ReactiveVar([]);
   t.stream;
 
   navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -136,6 +142,49 @@ Template.stream.onRendered(function () {
       });
     }
   });
+
+  //payment buttons
+  HTTP.get(Settings.findOne({
+    _id: 'currencyUrl'
+  }).url, function (err, res) {
+    console.log(err, res);
+    if (!err) {
+      let currency = Meteor.user().profile.currency;
+      let rate;
+      if (currency == "UAH") {
+        rate = res.data.find(rate => rate.base_ccy == "UAH" && rate.ccy == "USD").sale;
+      } else {
+        rate = res.data.find(rate => rate.ccy == "USD" && rate.base_ccy == "UAH").sale / res.data.find(rate => rate.ccy == currency && rate.base_ccy == "UAH").sale;
+      }
+      console.log(rate);
+      console.log(currency);
+      Prices.find().fetch().forEach((price) => {
+        console.log(price);
+        Meteor.call('create_form', {
+          'action': 'pay',
+          'amount': price.price * rate,
+          'currency': currency,
+          'description': 'description text',
+          'order_id': Router.current().params._id,
+          'version': '3',
+          language: Session.get('language'),
+          /// test environment
+          sandbox: 1,
+          result_url: `http://tvcamtv.com/stream/${Router.current().params._id}`,
+          server_url: 'http://tvcamtv.com/liqpay'
+        }, function (err, res) {
+          if (!err) {
+            let f = t.liqpay_forms.get();
+            console.log(f);
+            f.push(res);
+            t.liqpay_forms.set(f);
+          }
+        });
+      });
+    } else {
+      console.log(err)
+    }
+  });
 });
 
 Template.stream.onDestroyed(function () {
@@ -186,6 +235,9 @@ Template.stream.helpers({
   },
   expired() {
     return Template.instance().variables.expired.get()
+  },
+  liqpay_forms(){
+    return Template.instance().liqpay_forms.get()
   }
 });
 
