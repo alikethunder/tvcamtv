@@ -18,7 +18,7 @@ Template.leftsidenav.onRendered(function () {
 
 Template.leftsidenav.helpers({
   streams() {
-    return Streams.find().fetch()
+    return Streams.find({}, { sort: { created: 1 }}).fetch()
   },
   ownStreams(){
     /// finish render stream from this device devided

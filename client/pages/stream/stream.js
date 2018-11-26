@@ -8,8 +8,9 @@ import {
 import {
   Streams
 } from '../../collections/Streams'
-import { ServerDate } from '../../../lib/collections/serverDate';
-import { Server } from 'tls';
+import {
+  ServerDate
+} from '../../../lib/collections/serverDate';
 
 Template.stream.onCreated(function () {
   let t = this;
@@ -31,7 +32,8 @@ Template.stream.onCreated(function () {
   });
 
   t.variables = {
-    devices: new ReactiveVar({})
+    devices: new ReactiveVar({}),
+    expired: new ReactiveVar(false)
   };
 
   t.stream;
@@ -53,7 +55,7 @@ Template.stream.onCreated(function () {
 
 Template.stream.onRendered(function () {
   let t = this;
-
+  let serverDate = moment(ServerDate.findOne().date).utc().valueOf();
   t.autorun(() => {
     if (Router.current().params._id) {
       Materialize.updateTextFields();
@@ -72,56 +74,68 @@ Template.stream.onRendered(function () {
 
       let stream = Template.stream.__helpers.get('stream').call();
       //console.log('stream : ', stream);
+      t.variables.expired.set(!(moment(stream.payed_till).utc().valueOf() > serverDate));
 
-      if (stream.deviceId == deviceId) {
-        //source pc
-        t.variables.constraints = stream.constraints;
-        start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
-          t.stream = stream;
-        });
-      } else {
-        // receiver pc
-        const PORT = 8080;
-        t.socket = require('socket.io-client')(`http://localhost:${PORT}`);
-        t.socket.on('connect', function () {
-          t.peerId = new Mongo.ObjectID()._str;
-          Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {
-            let peer = new Peer();
-            peer.on('signal', function (data) {
-              t.socket.emit('signal', {
-                signal: data,
-                to: t.to, //to
-              })
-            });
+      if (Template.stream.__helpers.get('first').call() || !t.variables.expired.get()) {
+        //set timeout and reload if and when payed term will get expired
+        if (!t.variables.expired.get()) {
+          Meteor.setTimeout(() => {
+            t.variables.expired.set(true);
+            location.reload();
+          }, moment(stream.payed_till).utc().valueOf() - serverDate);
+        }
 
-            t.socket.on('signal', function (data) {
-              peer.signal(data.signal);
-              t.to = data.from;
-            });
+        if (stream.deviceId == deviceId) {
+          //source pc
+          t.variables.constraints = stream.constraints;
+          start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
+            t.stream = stream;
+          });
+        } else {
+          // receiver pc
+          const PORT = 8080;
+          t.socket = require('socket.io-client')(`http://localhost:${PORT}`);
+          t.socket.on('connect', function () {
+            t.peerId = new Mongo.ObjectID()._str;
+            Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {
+              let peer = new Peer();
+              peer.on('signal', function (data) {
+                t.socket.emit('signal', {
+                  signal: data,
+                  to: t.to, //to
+                })
+              });
 
-            peer.on('stream', function (stream) {
-              t.stream = stream;
-              document.getElementById('output').srcObject = stream;
+              t.socket.on('signal', function (data) {
+                peer.signal(data.signal);
+                t.to = data.from;
+              });
+
+              peer.on('stream', function (stream) {
+                t.stream = stream;
+                document.getElementById('output').srcObject = stream;
+              });
             });
           });
-        });
-
-        //reload page if stream constraints changed
-        t.autorun(()=>{
-          Streams.find({
-            _id: Router.current().params._id
-          }).observeChanges({
-            changed(id, stream){
-              if (stream.constraints){
-                location.reload()
-              }
-            }
-          })
-        });
+        }
       }
     }
   });
 
+  //reload page if stream constraints changed
+  t.autorun(() => {
+    if (Router.current().params._id) {
+      Streams.find({
+        _id: Router.current().params._id
+      }).observeChanges({
+        changed(id, stream) {
+          if (stream.constraints || stream.payed_till) {
+            location.reload()
+          }
+        }
+      });
+    }
+  });
 });
 
 Template.stream.onDestroyed(function () {
@@ -159,17 +173,19 @@ Template.stream.helpers({
   audio() {
     return Template.instance().variables.devices.get()['audioinput']
   },
-  cost_info(){
-    let s = Streams.find().fetch();
-    console.log(s);
-    if (s.length){
-
-    } else {
-      return `<small>${T9n.get('first_channel')}</small>`
-    }
+  first() {
+    return Streams.findOne({}, {
+      sort: {
+        created: 1
+      }
+    })._id == Router.current().params._id
   },
-  serverDate(){
-    return ServerDate.findOne().date;
+  payed_till(date) {
+    Session.get('language');
+    return moment(date).utc().format('LL')
+  },
+  expired() {
+    return Template.instance().variables.expired.get()
   }
 });
 

@@ -3,6 +3,8 @@ import {Translations} from '../../collections/Translations'
 Template.nav.onCreated(function(){
   let t = this;
   t.l = localStorage.getItem('language') || 'en';
+  moment.locale(t.l);
+  Session.set('language', t.l);
   t.subscribe('translations');
   t.autorun(()=>{
     Translations.find().fetch().forEach((language)=>{
@@ -31,7 +33,9 @@ Template.nav.events({
   },
   'change .lang'(e, t){
     T9n.setLanguage(e.target.value);
+    Session.set('language', e.target.value);
     localStorage.setItem('language', e.target.value);
+    moment.locale(e.target.value);
     document.title = `tvcamtv - ${T9n.get('landing.header')}`;
     document.description = `${T9n.get('landing.tabs.7.body')}`;
     Meteor.setTimeout(()=>{
