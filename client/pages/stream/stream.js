@@ -8,6 +8,8 @@ import {
 import {
   Streams
 } from '../../collections/Streams'
+import { ServerDate } from '../../../lib/collections/serverDate';
+import { Server } from 'tls';
 
 Template.stream.onCreated(function () {
   let t = this;
@@ -157,6 +159,18 @@ Template.stream.helpers({
   audio() {
     return Template.instance().variables.devices.get()['audioinput']
   },
+  cost_info(){
+    let s = Streams.find().fetch();
+    console.log(s);
+    if (s.length){
+
+    } else {
+      return `<small>${T9n.get('first_channel')}</small>`
+    }
+  },
+  serverDate(){
+    return ServerDate.findOne().date;
+  }
 });
 
 Template.stream.events({

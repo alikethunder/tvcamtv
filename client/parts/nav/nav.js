@@ -15,7 +15,6 @@ Template.nav.onRendered(function(){
   let t = this;
   T9n.setLanguage(t.l);
   t.$('.lang').val(t.l);
-  console.log(Object.keys(document));
   Meteor.setTimeout(()=>{
     document.title = `tvcamtv - ${T9n.get('landing.header')}`;
     $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body'));

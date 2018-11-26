@@ -4,6 +4,7 @@ import {
 import {
   start_video
 } from '../../js/start_video'
+
 Template.add_stream.onCreated(function () {
   let t = this;
   t.variables = {

@@ -3,7 +3,7 @@ import {Streams} from '../../collections/Streams'
 Meteor.methods({
   add_stream(stream){
     stream.userId = this.userId;
-    stream.peers = [];
+    stream.payed_till = moment().utc().format();
     return Streams.insert(stream);
   }
 });
