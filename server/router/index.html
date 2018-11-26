@@ -1,4 +1,13 @@
-<template name="root">
+<head>
+  <title>tvcamtv - {{t9n 'landing.header'}}</title>
+  <meta charset='UTF-8'>
+  <meta name='keywords' content='{{t9n "landing.keywords"}}'>
+  <meta name='description' content='{{t9n 'landing.tabs.7.body'}}'>
+  <link rel='shortcut icon' type='image/ico' href='/favicon.ico'>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
       <h1 class="header center"><img src="/favicon.png" style="width: 40px"> tvcamtv <img src="/favicon.png" style="width: 40px"></h1>
@@ -6,7 +15,7 @@
         <h5 class="header col s12 light">{{t9n 'landing.header'}}</h5>
       </div>
       <div class="row center">
-        <a href="{{start_link}}" id="download-button" class="btn-large waves-effect waves-light">{{t9n 'landing.start'}}</a>
+        <a href="/sign-up" id="download-button" class="btn-large waves-effect waves-light">{{t9n 'landing.start'}}</a>
       </div>
     </div>
   </div>
@@ -77,13 +86,13 @@
 
       <!--Third row-->
       <div class="row center">
-          <div class="icon-block" style="padding: 0 15px;">
-            <h2 class="center"><i class="material-icons" style="font-size: inherit">list_alt</i></h2>
-            <h5 class="center">{{t9n 'landing.tabs.7.header'}}</h5>
+        <div class="icon-block" style="padding: 0 15px;">
+          <h2 class="center"><i class="material-icons" style="font-size: inherit">list_alt</i></h2>
+          <h5 class="center">{{t9n 'landing.tabs.7.header'}}</h5>
 
-            <p class="light center">{{{t9n 'landing.tabs.7.body'}}}</p>
-          </div>
+          <p class="light center">{{{t9n 'landing.tabs.7.body'}}}</p>
+        </div>
       </div>
     </div>
   </div>
-</template>
+</body>

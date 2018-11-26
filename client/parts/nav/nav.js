@@ -15,6 +15,11 @@ Template.nav.onRendered(function(){
   let t = this;
   T9n.setLanguage(t.l);
   t.$('.lang').val(t.l);
+  console.log(Object.keys(document));
+  Meteor.setTimeout(()=>{
+    document.title = `tvcamtv - ${T9n.get('landing.header')}`;
+    $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body'));
+  }, 400);
 });
 
 Template.nav.events({
@@ -28,6 +33,8 @@ Template.nav.events({
   'change .lang'(e, t){
     T9n.setLanguage(e.target.value);
     localStorage.setItem('language', e.target.value);
+    document.title = `tvcamtv - ${T9n.get('landing.header')}`;
+    document.description = `${T9n.get('landing.tabs.7.body')}`;
     Meteor.setTimeout(()=>{
       $('select').not('.lang').material_select();
     }, 0);
