@@ -147,7 +147,7 @@ Template.stream.onRendered(function () {
   HTTP.get(Settings.findOne({
     _id: 'currencyUrl'
   }).url, function (err, res) {
-    console.log(err, res);
+    //console.log(err, res);
     if (!err) {
       let currency = Meteor.user().profile.currency;
       let rate;
@@ -156,16 +156,23 @@ Template.stream.onRendered(function () {
       } else {
         rate = res.data.find(rate => rate.ccy == "USD" && rate.base_ccy == "UAH").sale / res.data.find(rate => rate.ccy == currency && rate.base_ccy == "UAH").sale;
       }
-      console.log(rate);
-      console.log(currency);
+      //console.log(rate);
+      //console.log(currency);
+      let stream = Streams.findOne({
+        _id: Router.current().params._id
+      });
       Prices.find().fetch().forEach((price) => {
-        console.log(price);
+        //console.log(price);
+        let term = `channel.payment term.${price._id}`;
+        let d = `${T9n.get('channel.payment description')} ${stream.name || stream._id} ${T9n.get(term)}`;
+        let amount = price.price * rate / 97.25 * 100;
+        //console.log(d);
         Meteor.call('create_form', {
           'action': 'pay',
-          'amount': price.price * rate,
+          'amount': amount,
           'currency': currency,
-          'description': 'description text',
-          'order_id': Router.current().params._id,
+          'description': d,
+          'order_id': `${Router.current().params._id}:${price._id}`,
           'version': '3',
           language: Session.get('language'),
           /// test environment
@@ -175,8 +182,7 @@ Template.stream.onRendered(function () {
         }, function (err, res) {
           if (!err) {
             let f = t.liqpay_forms.get();
-            console.log(f);
-            f.push(res);
+            f.push(res.replace('translate', `${d} - ${Number.parseFloat(amount).toFixed(2)} ${currency}`));
             t.liqpay_forms.set(f);
           }
         });
@@ -231,6 +237,7 @@ Template.stream.helpers({
   },
   payed_till(date) {
     Session.get('language');
+    //$('input[name="btn_text"]').attr('src', `//static.liqpay.ua/buttons/p1${Session.get('language')}.radius.png`);
     return moment(date).utc().format('LL')
   },
   expired() {

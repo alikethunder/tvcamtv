@@ -42,7 +42,8 @@ export const LiqPay = function (public_key, private_key) {
 		return '<form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">' +
 			'<input type="hidden" name="data" value="' + data + '" />' +
 			'<input type="hidden" name="signature" value="' + signature + '" />' +
-			'<input type="image" src="//static.liqpay.ua/buttons/p1' + language + '.radius.png" name="btn_text" />' +
+			//'<input type="image" src="//static.liqpay.ua/buttons/p1' + language + '.radius.png" name="btn_text" />' +
+			'<button class="btn waves-effect waves-light" type="submit" name="action">translate</button>' + 
 			'</form>';
 
 	};
