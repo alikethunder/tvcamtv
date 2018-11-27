@@ -36,7 +36,7 @@ export const LiqPay = function (public_key, private_key) {
 			language = params.language;
 
 		params = this.cnb_params(params);
-		var data = new Buffer(JSON.stringify(params)).toString('base64');
+		var data = Buffer.from(JSON.stringify(params)).toString('base64');
 		var signature = this.str_to_sign(private_key + data + private_key);
 
 		return '<form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">' +
