@@ -23,5 +23,8 @@ Template.leftsidenav.helpers({
   ownStreams(){
     /// finish render stream from this device devided
     return Streams.find({deviceId}).fetch()
+  },
+  more_than_one_channel(streams){
+    return !!(streams.length - 1)
   }
 });

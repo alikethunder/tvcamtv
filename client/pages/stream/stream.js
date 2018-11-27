@@ -235,11 +235,6 @@ Template.stream.helpers({
       }
     })._id == Router.current().params._id
   },
-  payed_till(date) {
-    Session.get('language');
-    //$('input[name="btn_text"]').attr('src', `//static.liqpay.ua/buttons/p1${Session.get('language')}.radius.png`);
-    return moment(date).utc().format('LL')
-  },
   expired() {
     return Template.instance().variables.expired.get()
   },
