@@ -43,7 +43,7 @@ export const LiqPay = function (public_key, private_key) {
 			'<input type="hidden" name="data" value="' + data + '" />' +
 			'<input type="hidden" name="signature" value="' + signature + '" />' +
 			//'<input type="image" src="//static.liqpay.ua/buttons/p1' + language + '.radius.png" name="btn_text" />' +
-			'<button class="btn waves-effect waves-light" type="submit" name="action">translate</button>' + 
+			'<button class="btn waves-effect waves-light green" type="submit" name="action">translate</button>' + 
 			'</form>';
 
 	};
