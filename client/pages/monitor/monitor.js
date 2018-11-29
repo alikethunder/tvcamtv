@@ -28,7 +28,7 @@ Template.monitor.onRendered(function () {
   const PORT = Settings.findOne({_id: 'socket'}).port;
   t.streams_cursor.fetch().forEach((stream, index) => {
     t.sockets[stream._id] = {
-      socket: require('socket.io-client')(`http://localhost:${PORT}`),
+      socket: require('socket.io-client')(),
       peerId: '',
       to: '',
     };

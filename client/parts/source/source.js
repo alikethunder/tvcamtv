@@ -33,7 +33,7 @@ Template.source.onRendered(function () {
     peers.forEach((peer) => {
       //console.log(peer);
       //start socket
-      let socket = io(`http://localhost:${PORT}`);
+      let socket = io();
       socket.on('connect', function () {
         //console.log(socket.id);
         navigator.mediaDevices.getUserMedia(peer.constraints)

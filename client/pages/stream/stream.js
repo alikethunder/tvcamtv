@@ -100,7 +100,7 @@ Template.stream.onRendered(function () {
         } else {
           // receiver pc
           const PORT = Settings.findOne({_id: 'socket'}).port;
-          t.socket = require('socket.io-client')(`http://localhost:${PORT}`);
+          t.socket = require('socket.io-client')();
           t.socket.on('connect', function () {
             t.peerId = new Mongo.ObjectID()._str;
             Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {

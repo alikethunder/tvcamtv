@@ -5,7 +5,7 @@ const PORT = Settings.findOne({_id: 'socket'}).port;
 
 Meteor.startup(() => {
   // Server
-  const io = socket_io(PORT);
+  const io = socket_io();
 
   // New client
   io.on('connection', function (socket) {

@@ -48,9 +48,11 @@
           {{/if}}
         </div>
         <div class="buttons">
+          {{#unless first}}
           {{#each form in liqpay_forms}}
             {{{form}}}
           {{/each}}
+          {{/unless}}
         </div>
       </div>
     </div>
