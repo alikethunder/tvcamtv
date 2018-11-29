@@ -8,6 +8,9 @@ import {
 import {
   deviceId
 } from '../../js/deviceId'
+import {
+  Settings
+} from '../../collections/Settings'
 
 let io = require('socket.io-client');
 
@@ -18,7 +21,7 @@ Template.source.onCreated(function () {
 
 Template.source.onRendered(function () {
   let t = this;
-  const PORT = 8080;
+  const PORT = Settings.findOne({_id: 'socket'}).port;
 
   t.autorun(() => {
 

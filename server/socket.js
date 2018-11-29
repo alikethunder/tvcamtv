@@ -1,6 +1,7 @@
 import socket_io from 'socket.io';
+import {Settings} from './collections/Settings'
 
-const PORT = 8080;
+const PORT = Settings.findOne({_id: 'socket'}).port;
 
 Meteor.startup(() => {
   // Server

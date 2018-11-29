@@ -2,6 +2,9 @@ import Peer from 'simple-peer';
 import {
   Streams
 } from '../../collections/Streams'
+import {
+  Settings
+} from '../../collections/Settings'
 
 Template.monitor.onCreated(function () {
   let t = this;
@@ -22,7 +25,7 @@ Template.monitor.onCreated(function () {
 Template.monitor.onRendered(function () {
   let t = this;
 
-  const PORT = 8080;
+  const PORT = Settings.findOne({_id: 'socket'}).port;
   t.streams_cursor.fetch().forEach((stream, index) => {
     t.sockets[stream._id] = {
       socket: require('socket.io-client')(`http://localhost:${PORT}`),

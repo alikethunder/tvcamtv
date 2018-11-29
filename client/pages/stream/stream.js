@@ -99,7 +99,7 @@ Template.stream.onRendered(function () {
           });
         } else {
           // receiver pc
-          const PORT = 8080;
+          const PORT = Settings.findOne({_id: 'socket'}).port;
           t.socket = require('socket.io-client')(`http://localhost:${PORT}`);
           t.socket.on('connect', function () {
             t.peerId = new Mongo.ObjectID()._str;
