@@ -2,7 +2,6 @@ const [,, host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(
 
 // if not developer session
 if (port != 3000){
-  import httpProxy from 'http-proxy'
   import {readFileSync} from 'fs'
   import {Settings} from './collections/Settings'
   
