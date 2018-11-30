@@ -7,8 +7,8 @@ if (port != 3000){
   import {Settings} from './collections/Settings'
   
   let { key, cert } = Settings.findOne({_id: 'ssl_certificates'});
-
-  httpProxy.createServer({
+  SSL(readFileSync(key), readFileSync(cert));
+  /*httpProxy.createServer({
     target: {
       host,
       port
@@ -19,5 +19,5 @@ if (port != 3000){
     },
     ws: true,
     xfwd: true
-  }).listen(443);
+  }).listen(443);*/
 }
