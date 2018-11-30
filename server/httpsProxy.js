@@ -3,14 +3,19 @@ const [,, host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(
 // if not developer session
 if (port != 3000){
   import httpProxy from 'http-proxy'
+  import {readFileSync} from 'fs'
+  import {Settings} from './collections/Settings'
+  
+  let { key, cert } = Settings.findOne({_id: 'ssl_certificates'});
+
   httpProxy.createServer({
     target: {
       host,
       port
     },
     ssl: {
-      key: Assets.getText('/home/tvcamtv/acme.sh/tvcamtv.com/tvcamtv.com.key'),
-      cert: Assets.getText('/home/tvcamtv/acme.sh/tvcamtv.com/fullchain.cer')
+      key: readFileSync(key),
+      cert: readFileSync(cert)
     },
     ws: true,
     xfwd: true
