@@ -32,6 +32,7 @@ Template.monitor.onRendered(function () {
       peerId: '',
       to: '',
     };
+    console.log('socket : ', t.sockets[stream._id].socket);
     t.sockets[stream._id].socket.on('connect', function () {
       t.sockets[stream._id].peerId = new Mongo.ObjectID()._str;
 

@@ -1,15 +1,15 @@
 import socket_io from 'socket.io';
 import {Settings} from './collections/Settings'
 
-const PORT = Settings.findOne({_id: 'socket'}).port;
+const PORT = Settings.findOne({_id: 'socket'}).server_port;
 
 Meteor.startup(() => {
   // Server
   const io = socket_io(PORT);
-
+  //console.log('io : ', io);
   // New client
   io.on('connection', function (socket) {
-
+    //console.log('socket : ', socket);
     socket.on('signal', function (data) {
       socket.to(data.to).emit('signal', data);
     });

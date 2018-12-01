@@ -34,6 +34,7 @@ Template.source.onRendered(function () {
       //console.log(peer);
       //start socket
       let socket = io(PORT);
+      console.log('socket : ', socket);
       socket.on('connect', function () {
         //console.log(socket.id);
         navigator.mediaDevices.getUserMedia(peer.constraints)

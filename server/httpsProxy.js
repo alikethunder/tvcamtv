@@ -3,11 +3,12 @@ const [,, host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(
 // if not developer session
 if (port != 3000){
   import {readFileSync} from 'fs'
+  import httpProxy from 'http-proxy'
   import {Settings} from './collections/Settings'
   
   let { key, cert } = Settings.findOne({_id: 'ssl_certificates'});
-  SSL(readFileSync(key, 'utf-8'), readFileSync(cert, 'utf-8'));
-  /*httpProxy.createServer({
+  //SSL(readFileSync(key, 'utf-8'), readFileSync(cert, 'utf-8'));
+  httpProxy.createServer({
     target: {
       host,
       port
@@ -18,5 +19,5 @@ if (port != 3000){
     },
     ws: true,
     xfwd: true
-  }).listen(443);*/
+  }).listen(443);
 }
