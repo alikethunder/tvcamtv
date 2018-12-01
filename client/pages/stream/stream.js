@@ -81,7 +81,7 @@ Template.stream.onRendered(function () {
       let stream = Template.stream.__helpers.get('stream').call();
       //console.log('stream : ', stream);
       t.variables.expired.set(!(moment(stream.payed_till).utc().valueOf() > serverDate));
-
+      
       if (Template.stream.__helpers.get('first').call() || !t.variables.expired.get()) {
         //set timeout and reload if and when payed term will get expired
         if (!t.variables.expired.get()) {
@@ -179,8 +179,8 @@ Template.stream.onRendered(function () {
           language: Session.get('language'),
           /// test environment
           sandbox: 1,
-          result_url: `http://tvcamtv.com/stream/${Router.current().params._id}`,
-          server_url: 'http://tvcamtv.com/liqpay'
+          result_url: `https://tvcamtv.com/stream/${Router.current().params._id}`,
+          server_url: 'https://tvcamtv.com/liqpay'
         }, function (err, res) {
           if (!err) {
             let f = t.liqpay_forms.get();
