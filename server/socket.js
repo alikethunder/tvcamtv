@@ -1,28 +1,76 @@
 import socket_io from 'socket.io';
-import {Settings} from './collections/Settings'
+import {
+  Settings
+} from './collections/Settings'
 
-const PORT = Settings.findOne({_id: 'socket'}).server_port;
+const [, , host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
 
-Meteor.startup(() => {
-  // Server
-  const io = socket_io(PORT);
-  //console.log('io : ', io);
-  // New client
-  io.on('connection', function (socket) {
-    //console.log('socket : ', socket);
-    socket.on('signal', function (data) {
-      socket.to(data.to).emit('signal', data);
-    });
+const PORT = Settings.findOne({
+  _id: 'socket'
+}).server_port;
 
-    socket.on('close_connection', function(data){
-      io.sockets.connected[data.to] && io.sockets.connected[data.to].disconnect();
-      socket.disconnect();
-    });
+if (port != 3000) {
 
-    socket.on('close_connections', function(data){
-      data.sockets.forEach((socketId)=>{
-        io.sockets.connected[socketId] && io.sockets.connected[socketId].disconnect();
+  import https from 'https'
+  import {
+    readFileSync
+  } from 'fs'
+
+  let {
+    key,
+    cert
+  } = Settings.findOne({
+    _id: 'ssl_certificates'
+  });
+  let server = https.createServer({
+    key: readFileSync(key),
+    cert: readFileSync(cert)
+  }).listen(PORT);
+  Meteor.startup(() => {
+    // Server
+    const io = socket_io(server);
+    //console.log('io : ', io);
+    // New client
+    io.on('connection', function (socket) {
+      //console.log('socket : ', socket);
+      socket.on('signal', function (data) {
+        socket.to(data.to).emit('signal', data);
+      });
+  
+      socket.on('close_connection', function (data) {
+        io.sockets.connected[data.to] && io.sockets.connected[data.to].disconnect();
+        socket.disconnect();
+      });
+  
+      socket.on('close_connections', function (data) {
+        data.sockets.forEach((socketId) => {
+          io.sockets.connected[socketId] && io.sockets.connected[socketId].disconnect();
+        });
       });
     });
   });
-});
+} else {
+  Meteor.startup(() => {
+    // Server
+    const io = socket_io(PORT);
+    //console.log('io : ', io);
+    // New client
+    io.on('connection', function (socket) {
+      //console.log('socket : ', socket);
+      socket.on('signal', function (data) {
+        socket.to(data.to).emit('signal', data);
+      });
+  
+      socket.on('close_connection', function (data) {
+        io.sockets.connected[data.to] && io.sockets.connected[data.to].disconnect();
+        socket.disconnect();
+      });
+  
+      socket.on('close_connections', function (data) {
+        data.sockets.forEach((socketId) => {
+          io.sockets.connected[socketId] && io.sockets.connected[socketId].disconnect();
+        });
+      });
+    });
+  });
+}
