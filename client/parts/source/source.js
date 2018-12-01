@@ -21,20 +21,19 @@ Template.source.onCreated(function () {
 
 Template.source.onRendered(function () {
   let t = this;
-  const PORT = Settings.findOne({_id: 'socket'}).port;
+  const PORT = Settings.findOne({
+    _id: 'socket'
+  }).port;
+  t.peers = {};
 
-  t.autorun(() => {
-
-    //peers to this device streams
-    let peers = Peers.find({
-      deviceId
-    }).fetch();
-
-    peers.forEach((peer) => {
-      //console.log(peer);
+  Peers.find({
+    deviceId
+  }).observeChanges({
+    added(_id, peer) {
+      //console.log('peer added : ', _id, peer);
       //start socket
       let socket = io(PORT);
-      console.log('socket : ', socket);
+      //console.log('socket : ', socket);
       socket.on('connect', function () {
         //console.log(socket.id);
         navigator.mediaDevices.getUserMedia(peer.constraints)
@@ -60,6 +59,10 @@ Template.source.onRendered(function () {
             console.log(err);
           });
       });
-    });
+    },
+    removed(_id) {
+      //console.log('peer removed : ', _id);
+
+    }
   });
 });

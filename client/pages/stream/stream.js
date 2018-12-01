@@ -101,9 +101,9 @@ Template.stream.onRendered(function () {
           // receiver pc
           const PORT = Settings.findOne({_id: 'socket'}).port;
           t.socket = require('socket.io-client')(PORT);
-          console.log('socket : ', t.socket);
+          //console.log('socket : ', t.socket);
           t.socket.on('connect', function () {
-            console.log('socket connected');
+            //console.log('socket connected');
             t.peerId = new Mongo.ObjectID()._str;
             Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {
               let peer = new Peer();
