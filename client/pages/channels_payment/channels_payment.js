@@ -70,7 +70,7 @@ Template.channels_payment.events({
             //console.log(d);
             Meteor.call('create_form', {
               'action': 'pay',
-              'amount': amount,
+              'amount': Number.parseFloat(amount).toFixed(2),
               'currency': currency,
               'description': d,
               'order_id': `${channels.toString()}:${price._id}`,

@@ -33,6 +33,6 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
     }
   }
   //remove after successfull test
-  Payments.insert({query: req.query, method: req.method, received: moment().utc().format(), backup_entry: true});
+  Payments.insert({query: req.query, method: req.method, received: moment().utc().format(), backup_entry: true, url: req.url, originalUrl: req.originalUrl});
   res.end();
 });

@@ -171,7 +171,7 @@ Template.stream.onRendered(function () {
         //console.log(d);
         Meteor.call('create_form', {
           'action': 'pay',
-          'amount': amount,
+          'amount': Number.parseFloat(amount).toFixed(2),
           'currency': currency,
           'description': d,
           'order_id': `${Router.current().params._id}:${price._id}`,
