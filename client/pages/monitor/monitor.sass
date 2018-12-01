@@ -5,7 +5,23 @@
   justify-content: space-around
   .video_container
     margin: 5px
+    width: 300px
+    //height: 180px
+    display: flex
+    flex-direction: column
+    align-items: center
+    .video_name
+      display: flex
+      justify-content: space-between
+      align-self: stretch
+      .name
+        font-weight: 700
+        font-size: 16px
+      .payed_till
+        font-size: 14px
+    .expired
+      margin: 5px
     video
       width: 300px
-      height: 150px
+      //height: 150px
       background-color: $primary-color

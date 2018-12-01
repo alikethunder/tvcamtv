@@ -5,6 +5,9 @@ import {
 import {
   Settings
 } from '../../collections/Settings'
+import {
+  ServerDate
+} from '../../../lib/collections/serverDate';
 
 Template.monitor.onCreated(function () {
   let t = this;
@@ -26,42 +29,46 @@ Template.monitor.onRendered(function () {
   let t = this;
 
   const PORT = Settings.findOne({_id: 'socket'}).port;
+  let serverDate = moment(ServerDate.findOne().date).utc().valueOf();
   t.streams_cursor.fetch().forEach((stream, index) => {
-    t.sockets[stream._id] = {
-      socket: require('socket.io-client')(PORT),
-      peerId: '',
-      to: '',
-    };
-    //console.log('socket : ', t.sockets[stream._id].socket);
-    t.sockets[stream._id].socket.on('connect', function () {
-      t.sockets[stream._id].peerId = new Mongo.ObjectID()._str;
-
-      t.sockets_to_disconnect.add(t.sockets[stream._id].socket.id);
-      t.peers_to_disconnect.push(t.sockets[stream._id].peerId);
-      if (!index) {
-        t.disconnecting_socket = t.sockets[stream._id].socket;
-      }
-
-      Meteor.call('add_receiver', t.sockets[stream._id].peerId, stream._id, stream.deviceId, stream.constraints, t.sockets[stream._id].socket.id, function () {
-        let peer = new Peer();
-        peer.on('signal', function (data) {
-          t.sockets[stream._id].socket.emit('signal', {
-            signal: data,
-            to: t.sockets[stream._id].to, //to
-          })
-        });
-
-        t.sockets[stream._id].socket.on('signal', function (data) {
-          peer.signal(data.signal);
-          t.sockets_to_disconnect.add(data.from);
-          t.sockets[stream._id].to = data.from;
-        });
-
-        peer.on('stream', function (data) {
-          document.getElementById(stream._id).srcObject = data;
+    console.log(stream, index);
+    if (!index || moment(stream.payed_till).utc().valueOf() > serverDate){
+      t.sockets[stream._id] = {
+        socket: require('socket.io-client')(PORT),
+        peerId: '',
+        to: '',
+      };
+      //console.log('socket : ', t.sockets[stream._id].socket);
+      t.sockets[stream._id].socket.on('connect', function () {
+        t.sockets[stream._id].peerId = new Mongo.ObjectID()._str;
+  
+        t.sockets_to_disconnect.add(t.sockets[stream._id].socket.id);
+        t.peers_to_disconnect.push(t.sockets[stream._id].peerId);
+        if (!index) {
+          t.disconnecting_socket = t.sockets[stream._id].socket;
+        }
+  
+        Meteor.call('add_receiver', t.sockets[stream._id].peerId, stream._id, stream.deviceId, stream.constraints, t.sockets[stream._id].socket.id, function () {
+          let peer = new Peer();
+          peer.on('signal', function (data) {
+            t.sockets[stream._id].socket.emit('signal', {
+              signal: data,
+              to: t.sockets[stream._id].to, //to
+            })
+          });
+  
+          t.sockets[stream._id].socket.on('signal', function (data) {
+            peer.signal(data.signal);
+            t.sockets_to_disconnect.add(data.from);
+            t.sockets[stream._id].to = data.from;
+          });
+  
+          peer.on('stream', function (data) {
+            document.getElementById(stream._id).srcObject = data;
+          });
         });
       });
-    });
+    }
   });
 
   // reload page if stream added or changed constraints
@@ -97,6 +104,9 @@ Template.monitor.onDestroyed(function () {
 Template.monitor.helpers({
   streams() {
     return Template.instance().streams_cursor.fetch()
+  },
+  expired(payed_till){
+    return moment(payed_till).utc().valueOf() < moment(ServerDate.findOne().date).utc().valueOf()
   }
 });
 
