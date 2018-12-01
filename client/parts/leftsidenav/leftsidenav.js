@@ -4,6 +4,7 @@ import {
 import {
   deviceId
 } from '../../js/deviceId'
+import { Settings } from '../../collections/Settings';
 
 Template.leftsidenav.onCreated(function () {
   let t = this;
@@ -26,5 +27,11 @@ Template.leftsidenav.helpers({
   },
   more_than_one_channel(streams){
     return !!(streams.length - 1)
+  },
+  aliexpress_advertisement(){
+    return Settings.findOne({_id: 'aliexpress_advertisement'}).content
+  },
+  google_adsense_advertisement(){
+    return Settings.findOne({_id: 'google_adsense_advertisement'}).content
   }
 });
