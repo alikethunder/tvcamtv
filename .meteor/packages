@@ -32,4 +32,4 @@ alanning:roles
 meteorhacks:ssr
 rzymek:moment-locales
 http
-#force-ssl
+force-ssl
