@@ -1,12 +1,7 @@
-var seoPicker = Picker.filter(function(req, res) {
-    return /_escaped_fragment_/.test(req.url);
-});
- 
-// route for landing
-seoPicker.route('/:lang', function(params, req, res) {
-    var html = SSR.render('index', {
-        data: {lang: params.lang}
+import {Translations} from '../collections/Translations'
+
+Translations.find({}, {fields: {_id: 1}}).fetch().map(t=>t._id).forEach(lang=>{
+    WebApp.connectHandlers.use(`/${lang}`, (req, res, next)=>{
+        res.end(SSR.render('index', {lang}))
     });
- 
-    res.end(html);
 });
