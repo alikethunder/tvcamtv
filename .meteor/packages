@@ -29,7 +29,6 @@ useraccounts:materialize
 webapp@1.7.0
 staringatlights:fast-render
 alanning:roles
-meteorhacks:picker
 meteorhacks:ssr
 rzymek:moment-locales
 http
