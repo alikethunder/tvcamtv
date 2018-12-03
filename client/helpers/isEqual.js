@@ -1,3 +1,3 @@
-Template.registerHelper('isEqual', function(a, b){
+Template.registerHelper('isEqual', function (a, b) {
   return a == b
 })

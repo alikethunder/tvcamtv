@@ -26,10 +26,13 @@ Template.screen.onRendered(function () {
 
   T9n.setLanguage(t.l);
   t.$('.lang').val(t.l);
-  Meteor.setTimeout(() => {
-    document.title = `tvcamtv - ${T9n.get('landing.header')}`;
-    $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body'));
-  }, 400);
+  let i = Meteor.setInterval(() => {
+    if (T9n.get('landing.header') != ">landing.header<") {
+      document.title = `tvcamtv - ${T9n.get('landing.header')}`;
+      $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body'));
+      Meteor.clearInterval(i);
+    }
+  }, 100);
 
   t.autorun((computation) => {
     // insert advertisement, analitycs tags, etc.

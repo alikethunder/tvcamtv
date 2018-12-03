@@ -1,4 +1,4 @@
-Template.registerHelper('payed_till', function(date){
+Template.registerHelper('payed_till', function (date) {
   Session.get('language');
-    return moment(date).utc().format('LL')
+  return moment(date).utc().format('LL')
 });
