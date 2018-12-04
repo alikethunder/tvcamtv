@@ -25,7 +25,7 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
     backup_entry: true,
     url: req.url,
     originalUrl: req.originalUrl,
-    body: body,
+    body: req.body,
     headers: req.headers,
     rawHeaders: req.rawHeaders
   });
