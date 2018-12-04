@@ -26,18 +26,6 @@ WebApp.connectHandlers.use(urlencodedParser)
 //success statuses = ['wait_accept', 'success'];
 
 WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
-  Payments.insert({
-    query: req.query,
-    method: req.method,
-    received: moment().utc().format(),
-    backup_entry: true,
-    url: req.url,
-    originalUrl: req.originalUrl,
-    body: req.body,
-    headers: req.headers,
-    rawHeaders: req.rawHeaders
-  });
-
   if (req.method == "POST") {
     let s = liqpay.str_to_sign(keys.private + req.body.data + keys.private);
     if (s == req.body.signature) {
@@ -52,7 +40,6 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
       });
 
       if (['wait_accept', 'success', 'sandbox'].includes(data.status)) {
-        Streams.insert({includes: true});
         data.order_id.replace(/([^\s\:]+)\:([^\s]+)\//, function (match, streamId, priceId) {
           let stream = Streams.findOne({
             _id: streamId
@@ -62,12 +49,11 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
           });
           let payed_till = moment(stream.payed_till).utc().valueOf();
           let m = payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
-          Streams.insert({stream: stream, replace: true, payed_till: m.add(price.days).add(price.hours).utc().format()});
           Streams.update({
             _id: streamId
           }, {
             $set: {
-              payed_till: m.add(price.days).add(price.hours).utc().format()
+              payed_till: m.add(price.days, 'd').add(price.hours, 'h').utc().format()
             }
           });
         });
