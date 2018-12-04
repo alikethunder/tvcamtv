@@ -174,7 +174,7 @@ Template.stream.onRendered(function () {
           'amount': Number.parseFloat(amount).toFixed(2),
           'currency': currency,
           'description': d,
-          'order_id': `${Router.current().params._id}:${price._id}`,
+          'order_id': `${Router.current().params._id}:${price._id}/${new Mongo.ObjectID()._str}`,
           'version': '3',
           language: Session.get('language'),
           /// test environment

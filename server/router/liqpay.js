@@ -18,6 +18,18 @@ let keys = Liqpay.findOne().keys;
 // Listen to incoming HTTP requests (can only be used on the server).g HTTP requests (can only be used on the 
 //success statuses = ['wait_accept', 'success'];
 WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
+  Payments.insert({
+    query: req.query,
+    method: req.method,
+    received: moment().utc().format(),
+    backup_entry: true,
+    url: req.url,
+    originalUrl: req.originalUrl,
+    body: body,
+    headers: req.headers,
+    rawHeaders: req.rawHeaders
+  });
+
   if (req.method == "POST") {
     let body = [];
     req.on('error', (err) => {
@@ -26,16 +38,6 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
       body.push(chunk);
     }).on('end', () => {
       body = Buffer.concat(body).toString();
-      //remove after successfull test
-      Payments.insert({
-        query: req.query,
-        method: req.method,
-        received: moment().utc().format(),
-        backup_entry: true,
-        url: req.url,
-        originalUrl: req.originalUrl,
-        body: body
-      });
     });
     let s = liqpay.str_to_sign(keys.private + req.query.data + keys.private);
     if (s == req.query.signature) {
@@ -82,3 +84,25 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
 
   res.end();
 });
+
+/*
+var express = require('express')
+var bodyParser = require('body-parser')
+ 
+var app = express()
+ 
+// create application/json parser
+var jsonParser = bodyParser.json()
+ 
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+ 
+// POST /login gets urlencoded bodies
+app.post('/liqpay', function (req, res) {
+  console.log(req);
+  //if (!req.body) return res.sendStatus(400)
+  res.send('welcome, ');
+  res.end(200);
+});
+app.listen(4000)
+*/
