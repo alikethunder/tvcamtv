@@ -15,9 +15,16 @@ import {
 } from '../collections/Prices'
 let keys = Liqpay.findOne().keys;
 
+var bodyParser = require('body-parser')
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+WebApp.connectHandlers.use(urlencodedParser)
 // Listen to incoming HTTP requests (can only be used on the server).g HTTP requests (can only be used on the 
 //success statuses = ['wait_accept', 'success'];
+
 WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
+  //console.log(req.body);
   Payments.insert({
     query: req.query,
     method: req.method,
@@ -84,7 +91,6 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
 
   res.end();
 });
-
 /*
 var express = require('express')
 var bodyParser = require('body-parser')
@@ -97,12 +103,24 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
  
-// POST /login gets urlencoded bodies
-app.post('/liqpay', function (req, res) {
-  console.log(req);
+// POST /liqpay gets urlencoded bodies
+app.post('/liqpay', urlencodedParser, function (req, res) {
+  console.log(req.body);
+  Payments.insert({
+    query: req.query,
+    method: req.method,
+    received: moment().utc().format(),
+    backup_entry: true,
+    url: req.url,
+    originalUrl: req.originalUrl,
+    body: req.body,
+    headers: req.headers,
+    rawHeaders: req.rawHeaders
+  });
   //if (!req.body) return res.sendStatus(400)
-  res.send('welcome, ');
+  //res.send('welcome, ');
   res.end(200);
 });
+
 app.listen(4000)
 */
