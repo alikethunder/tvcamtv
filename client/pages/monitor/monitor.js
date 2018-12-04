@@ -31,7 +31,7 @@ Template.monitor.onRendered(function () {
   const PORT = Settings.findOne({_id: 'socket'}).port;
   let serverDate = moment(ServerDate.findOne().date).utc().valueOf();
   t.streams_cursor.fetch().forEach((stream, index) => {
-    console.log(stream, index);
+    //console.log(stream, index);
     if (!index || moment(stream.payed_till).utc().valueOf() > serverDate){
       t.sockets[stream._id] = {
         socket: require('socket.io-client')(PORT),

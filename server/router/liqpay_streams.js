@@ -27,7 +27,7 @@ WebApp.connectHandlers.use(urlencodedParser)
 // Listen to incoming HTTP requests (can only be used on the server).g HTTP requests (can only be used on the 
 //success statuses = ['wait_accept', 'success'];
 
-WebApp.connectHandlers.use('/liqpay/streams', (req, res, next) => {
+WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
   if (req.method == "POST") {
     let s = liqpay.str_to_sign(keys.private + req.body.data + keys.private);
     if (s == req.body.signature) {

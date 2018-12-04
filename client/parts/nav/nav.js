@@ -4,6 +4,8 @@ Template.nav.onCreated(function(){
 
 Template.nav.onRendered(function(){
   let t = this;
+
+  t.$('.lang').val(localStorage.getItem('language') || 'en');
 });
 
 Template.nav.events({

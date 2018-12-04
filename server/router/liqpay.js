@@ -1,4 +1,4 @@
-import {
+/*import {
   Payments
 } from '../collections/Payments'
 import {
@@ -63,4 +63,4 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
   }
 
   res.end();
-});
+});*/
