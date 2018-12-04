@@ -73,11 +73,11 @@ Template.channels_payment.events({
               'amount': Number.parseFloat(amount).toFixed(2),
               'currency': currency,
               'description': d,
-              'order_id': `${channels.toString()}:${price._id}`,
+              'order_id': `${channels.toString()}:${price._id}/${new Mongo.ObjectID()._str}`,
               'version': '3',
               language: Session.get('language'),
               /// test environment
-              sandbox: 1,
+              //sandbox: 1,
               result_url: `https://tvcamtv.com/channels_payment`,
               server_url: 'https://tvcamtv.com/liqpay/streams'
             }, function (err, res) {

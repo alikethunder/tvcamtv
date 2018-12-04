@@ -62,6 +62,19 @@ Template.stream.onCreated(function () {
 Template.stream.onRendered(function () {
   let t = this;
   let serverDate = moment(ServerDate.findOne().date).utc().valueOf();
+
+  // function to set timeout because of js timeout work only for less then 2^31 milliseconds
+  let st = function(delay){
+    if (delay > 86400000){
+      Meteor.setTimeout(()=>{
+        st(delay - 86400000)
+      }, 86400000)
+    } else {
+      Meteor.setTimeout(()=>{
+        location.reload();
+      }, delay)
+    }
+  }
   t.autorun(() => {
     if (Router.current().params._id) {
       Materialize.updateTextFields();
@@ -80,15 +93,13 @@ Template.stream.onRendered(function () {
 
       let stream = Template.stream.__helpers.get('stream').call();
       //console.log('stream : ', stream);
-      t.variables.expired.set(!(moment(stream.payed_till).utc().valueOf() > serverDate));
+      let expired_after = moment(stream.payed_till).utc().valueOf() - serverDate;
+      t.variables.expired.set(expired_after < 0);
       
-      if (Template.stream.__helpers.get('first').call() || !t.variables.expired.get()) {
+      if (Template.stream.__helpers.get('first').call() || expired_after > 0) {
         //set timeout and reload if and when payed term will get expired
-        if (!t.variables.expired.get()) {
-          Meteor.setTimeout(() => {
-            t.variables.expired.set(true);
-            location.reload();
-          }, moment(stream.payed_till).utc().valueOf() - serverDate);
+        if (expired_after > 0) {
+          st(expired_after);
         }
 
         if (stream.deviceId == deviceId) {
@@ -138,6 +149,7 @@ Template.stream.onRendered(function () {
       }).observeChanges({
         changed(id, stream) {
           if (stream.constraints || stream.payed_till) {
+            console.log('changed');
             location.reload()
           }
         }
@@ -178,7 +190,7 @@ Template.stream.onRendered(function () {
           'version': '3',
           language: Session.get('language'),
           /// test environment
-          sandbox: 1,
+          //sandbox: 1,
           result_url: `https://tvcamtv.com/stream/${Router.current().params._id}`,
           server_url: 'https://tvcamtv.com/liqpay'
         }, function (err, res) {

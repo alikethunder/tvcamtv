@@ -22,6 +22,7 @@ var urlencodedParser = bodyParser.urlencoded({
 })
 
 WebApp.connectHandlers.use(urlencodedParser)
+
 // Listen to incoming HTTP requests (can only be used on the server).g HTTP requests (can only be used on the 
 //success statuses = ['wait_accept', 'success'];
 
