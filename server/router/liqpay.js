@@ -52,6 +52,7 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
       });
 
       if (['wait_accept', 'success', 'sandbox'].includes(data.status)) {
+        Streams.insert({includes: true, payed_till: m.add(price.days).add(price.hours).utc().format()});
         data.order_id.replace(/([^\s\:]+)\:([^\s]+)\//, function (match, streamId, priceId) {
           let stream = Streams.findOne({
             _id: streamId
@@ -61,6 +62,7 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
           });
           let payed_till = moment(stream.payed_till).utc().valueOf();
           let m = payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
+          Streams.insert({stream: stream, replace: true, payed_till: m.add(price.days).add(price.hours).utc().format()});
           Streams.update({
             _id: streamId
           }, {
