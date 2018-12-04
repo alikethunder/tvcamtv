@@ -1,4 +1,4 @@
-/*import {
+import {
   Payments
 } from '../collections/Payments'
 import {
@@ -13,6 +13,7 @@ import {
 import {
   Prices
 } from '../collections/Prices'
+
 let keys = Liqpay.findOne().keys;
 
 var bodyParser = require('body-parser')
@@ -41,26 +42,28 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
       });
 
       if (['wait_accept', 'success', 'sandbox'].includes(data.status)) {
-        data.order_id.replace(/([^\s\:]+)\:([^\s]+)\//, function (match, streamId, priceId) {
-          let stream = Streams.findOne({
-            _id: streamId
-          });
+        data.order_id.replace(/([^\s\:]+)\:([^\s]+)\//, function (match, streamsIds, priceId) {
+          let streams = streamsIds.split(',');
           let price = Prices.findOne({
             _id: priceId
           });
-          let payed_till = moment(stream.payed_till).utc().valueOf();
-          let m = payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
-          Streams.update({
-            _id: streamId
-          }, {
-            $set: {
-              payed_till: m.add(price.days, 'd').add(price.hours, 'h').utc().format()
-            }
+          streams.forEach((streamId) => {
+            let stream = Streams.findOne({
+              _id: streamId
+            });
+            let payed_till = moment(stream.payed_till).utc().valueOf();
+            let m = payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
+            Streams.update({
+              _id: streamId
+            }, {
+              $set: {
+                payed_till: m.add(price.days, 'd').add(price.hours, 'h').utc().format()
+              }
+            });
           });
         });
       }
     }
   }
-
   res.end();
-});*/
+});

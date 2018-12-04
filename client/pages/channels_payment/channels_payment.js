@@ -79,7 +79,7 @@ Template.channels_payment.events({
               /// test environment
               sandbox: 1,
               result_url: `https://tvcamtv.com/channels_payment`,
-              server_url: 'https://tvcamtv.com/liqpay/streams'
+              server_url: 'https://tvcamtv.com/liqpay'
             }, function (err, res) {
               if (!err) {
                 let f = t.liqpay_forms.get();
