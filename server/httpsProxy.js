@@ -7,7 +7,6 @@ if (port != 3000){
   import {Settings} from './collections/Settings'
   
   let { key, cert } = Settings.findOne({_id: 'ssl_certificates'});
-  //SSL(readFileSync(key, 'utf-8'), readFileSync(cert, 'utf-8'));
   httpProxy.createServer({
     target: {
       host,

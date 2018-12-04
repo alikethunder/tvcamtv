@@ -17,14 +17,15 @@ let keys = Liqpay.findOne().keys;
 
 var bodyParser = require('body-parser')
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({
+  extended: false
+})
 
 WebApp.connectHandlers.use(urlencodedParser)
 // Listen to incoming HTTP requests (can only be used on the server).g HTTP requests (can only be used on the 
 //success statuses = ['wait_accept', 'success'];
 
 WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
-  //console.log(req.body);
   Payments.insert({
     query: req.query,
     method: req.method,
@@ -38,28 +39,20 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
   });
 
   if (req.method == "POST") {
-    let body = [];
-    req.on('error', (err) => {
-      console.error(err);
-    }).on('data', (chunk) => {
-      body.push(chunk);
-    }).on('end', () => {
-      body = Buffer.concat(body).toString();
-    });
-    let s = liqpay.str_to_sign(keys.private + req.query.data + keys.private);
-    if (s == req.query.signature) {
+    let s = liqpay.str_to_sign(keys.private + req.body.data + keys.private);
+    if (s == req.body.signature) {
       //parse params
-      let data = JSON.parse(Buffer.from(req.query.data, 'base64'));
+      let data = JSON.parse(Buffer.from(req.body.data, 'base64'));
 
       Payments.insert({
         data,
-        signature: req.query.signature,
+        signature: req.body.signature,
         method: req.method,
         received: moment().utc().format()
       });
 
       if (['wait_accept', 'success', 'sandbox'].includes(data.status)) {
-        data.order_id.replace(/([^\s\:]+)\:([^\s]+)/, function (match, streamId, priceId) {
+        data.order_id.replace(/([^\s\:]+)\:([^\s]+)\//, function (match, streamId, priceId) {
           let stream = Streams.findOne({
             _id: streamId
           });
@@ -67,23 +60,14 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
             _id: priceId
           });
           let payed_till = moment(stream.payed_till).utc().valueOf();
-          if (payed_till > moment().utc().valueOf()) {
-            Streams.update({
-              _id: streamId
-            }, {
-              $set: {
-                payed_till: moment(payed_till).add(price.days).add(price.hours).utc().format()
-              }
-            })
-          } else {
-            Streams.update({
-              _id: streamId
-            }, {
-              $set: {
-                payed_till: moment().add(price.days).add(price.hours).utc().format()
-              }
-            })
-          }
+          let m = payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
+          Streams.update({
+            _id: streamId
+          }, {
+            $set: {
+              payed_till: m.add(price.days).add(price.hours).utc().format()
+            }
+          });
         });
       }
     }
@@ -91,36 +75,3 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
 
   res.end();
 });
-/*
-var express = require('express')
-var bodyParser = require('body-parser')
- 
-var app = express()
- 
-// create application/json parser
-var jsonParser = bodyParser.json()
- 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
- 
-// POST /liqpay gets urlencoded bodies
-app.post('/liqpay', urlencodedParser, function (req, res) {
-  console.log(req.body);
-  Payments.insert({
-    query: req.query,
-    method: req.method,
-    received: moment().utc().format(),
-    backup_entry: true,
-    url: req.url,
-    originalUrl: req.originalUrl,
-    body: req.body,
-    headers: req.headers,
-    rawHeaders: req.rawHeaders
-  });
-  //if (!req.body) return res.sendStatus(400)
-  //res.send('welcome, ');
-  res.end(200);
-});
-
-app.listen(4000)
-*/
