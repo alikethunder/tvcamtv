@@ -52,7 +52,7 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
       });
 
       if (['wait_accept', 'success', 'sandbox'].includes(data.status)) {
-        Streams.insert({includes: true, payed_till: m.add(price.days).add(price.hours).utc().format()});
+        Streams.insert({includes: true});
         data.order_id.replace(/([^\s\:]+)\:([^\s]+)\//, function (match, streamId, priceId) {
           let stream = Streams.findOne({
             _id: streamId
