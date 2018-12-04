@@ -2,5 +2,10 @@ User-agent: *
 Allow: /en
 Allow: /ru
 Allow: /uk
-Disallow: /
+Allow: /
+Allow: /sitemap.xml
+Disallow: /*
 Sitemap: https://tvcamtv.com/sitemap.xml
+
+User-agent: Mediapartners-Google
+Allow: /
