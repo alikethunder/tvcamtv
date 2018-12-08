@@ -51,13 +51,12 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
             let stream = Streams.findOne({
               _id: streamId
             });
-            let payed_till = moment(stream.payed_till).utc().valueOf();
-            let m = payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
+            let m = stream.payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
             Streams.update({
               _id: streamId
             }, {
               $set: {
-                payed_till: m.add(price.days, 'd').add(price.hours, 'h').utc().format()
+                payed_till: m.add(price.days, 'd').add(price.hours, 'h').utc().valueOf()
               }
             });
           });

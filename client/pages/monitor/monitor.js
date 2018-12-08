@@ -29,10 +29,10 @@ Template.monitor.onRendered(function () {
   let t = this;
 
   const PORT = Settings.findOne({_id: 'socket'}).port;
-  let serverDate = moment(ServerDate.findOne().date).utc().valueOf();
+  let serverDate = ServerDate.findOne().date;
   t.streams_cursor.fetch().forEach((stream, index) => {
     //console.log(stream, index);
-    if (!index || moment(stream.payed_till).utc().valueOf() > serverDate){
+    if (!index || stream.payed_till > serverDate){
       t.sockets[stream._id] = {
         socket: require('socket.io-client')(PORT),
         peerId: '',
@@ -106,7 +106,7 @@ Template.monitor.helpers({
     return Template.instance().streams_cursor.fetch()
   },
   expired(payed_till){
-    return moment(payed_till).utc().valueOf() < moment(ServerDate.findOne().date).utc().valueOf()
+    return payed_till < ServerDate.findOne().date
   }
 });
 

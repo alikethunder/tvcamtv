@@ -61,7 +61,7 @@ Template.stream.onCreated(function () {
 
 Template.stream.onRendered(function () {
   let t = this;
-  let serverDate = moment(ServerDate.findOne().date).utc().valueOf();
+  let serverDate = ServerDate.findOne().date;
 
   // function to set timeout because of js timeout work only for less then 2^31 milliseconds
   let st = function(delay){
@@ -93,7 +93,7 @@ Template.stream.onRendered(function () {
 
       let stream = Template.stream.__helpers.get('stream').call();
       //console.log('stream : ', stream);
-      let expired_after = moment(stream.payed_till).utc().valueOf() - serverDate;
+      let expired_after = stream.payed_till - serverDate;
       t.variables.expired.set(expired_after < 0);
       
       if (Template.stream.__helpers.get('first').call() || expired_after > 0) {
