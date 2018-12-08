@@ -39,8 +39,13 @@ Template.stream.onCreated(function () {
 
   t.variables = {
     devices: new ReactiveVar({}),
-    expired: new ReactiveVar(false)
+    expired: new ReactiveVar(false),
+    record_in_progress: new ReactiveVar(false),
+    recorded_blobs: new ReactiveVar([]),
+    record_started: undefined,
+    record_finished: undefined
   };
+  t.mediaRecorder;
   t.liqpay_forms = new ReactiveVar([]);
   t.stream;
 
@@ -64,13 +69,13 @@ Template.stream.onRendered(function () {
   let serverDate = ServerDate.findOne().date;
 
   // function to set timeout because of js timeout work only for less then 2^31 milliseconds
-  let st = function(delay){
-    if (delay > 86400000){
-      Meteor.setTimeout(()=>{
+  let st = function (delay) {
+    if (delay > 86400000) {
+      Meteor.setTimeout(() => {
         st(delay - 86400000)
       }, 86400000)
     } else {
-      Meteor.setTimeout(()=>{
+      Meteor.setTimeout(() => {
         location.reload();
       }, delay)
     }
@@ -94,8 +99,9 @@ Template.stream.onRendered(function () {
       let stream = Template.stream.__helpers.get('stream').call();
       //console.log('stream : ', stream);
       let expired_after = stream.payed_till - serverDate;
-      t.variables.expired.set(expired_after < 0);
       
+      t.variables.expired.set(expired_after < 0);
+
       if (Template.stream.__helpers.get('first').call() || expired_after > 0) {
         //set timeout and reload if and when payed term will get expired
         if (expired_after > 0) {
@@ -110,7 +116,9 @@ Template.stream.onRendered(function () {
           });
         } else {
           // receiver pc
-          const PORT = Settings.findOne({_id: 'socket'}).port;
+          const PORT = Settings.findOne({
+            _id: 'socket'
+          }).port;
           t.socket = require('socket.io-client')(PORT);
           //console.log('socket : ', t.socket);
           t.socket.on('connect', function () {
@@ -252,8 +260,17 @@ Template.stream.helpers({
   expired() {
     return Template.instance().variables.expired.get()
   },
-  liqpay_forms(){
+  liqpay_forms() {
     return Template.instance().liqpay_forms.get()
+  },
+  record_in_progress() {
+    return Template.instance().variables.record_in_progress.get()
+  },
+  recording() {
+    return Template.instance().variables.recorded_blobs.get().length
+  },
+  not_expired_or_first(exp, f){
+    return !exp || f
   }
 });
 
@@ -278,5 +295,52 @@ Template.stream.events({
         start_video(t.stream, t.variables.constraints, 'output').then(res => t.stream = res);
       } else console.log(err);
     });
+  },
+  'click .start_record'(e, t) {
+    t.variables.record_in_progress.set(true);
+    t.variables.record_started = ServerDate.findOne().date;
+    t.variables.recorded_blobs.set([])
+    t.mediaRecorder = new MediaRecorder(t.stream, {
+      mimeType: 'video/webm'
+    });
+    t.mediaRecorder.ondataavailable = function (ev) {
+      if (ev.data && ev.data.size > 0) {
+        let b = t.variables.recorded_blobs.get();
+        b.push(ev.data);
+        t.variables.recorded_blobs.set(b);
+      }
+    }
+    t.mediaRecorder.start(10);
+    t.record_timeout = Meteor.setTimeout(()=>{
+      $('.stop_record').click();
+      $('.download_record').click();
+      Meteor.setTimeout(()=>{
+        $('.start_record').click()
+      }, 100);
+    }, 3600000);
+  },
+  'click .stop_record'(e, t) {
+    Meteor.clearTimeout(t.record_timeout);
+    t.variables.record_in_progress.set(false);
+    t.mediaRecorder.stop();
+    t.variables.record_finished = ServerDate.findOne().date;
+  },
+  'click .download_record'(e, t) {
+    t.variables.record_finished = t.variables.record_in_progress.get() ? ServerDate.findOne().date : t.variables.record_finished || ServerDate.findOne().date;
+
+    let url = window.URL.createObjectURL(new Blob(t.variables.recorded_blobs.get(), {
+      type: 'video/webm'
+    }));
+    let a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.target = '_blank';
+    a.download = `${moment(t.variables.record_started).format('D MMM YYYY HH:mm:ss')} - ${moment(t.variables.record_finished).format('D MMM YYYY HH:mm:ss')}.webm`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
   },
 });

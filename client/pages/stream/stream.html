@@ -35,7 +35,25 @@
     <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}}
       {{t9n 'channel.channel'}}</a>
     <div class="video_container">
-      <video id="output" autoplay playsinline controls></video>
+      <div class="video_plus_rec_buttons">
+        <video id="output" autoplay playsinline controls></video>
+        {{#if not_expired_or_first expired first}}
+        {{#if record_in_progress}}
+        <div class="record_info">{{t9n 'record_info'}}</div>
+        {{/if}}
+        <div class="rec_buttons">
+          {{#if record_in_progress}}
+          <span class="record_in_progress red-text">Идет запись</span>
+          <button class="btn waves-effect waves-light stop_record">Остановить</button>
+          {{else}}
+          <button class="btn waves-effect waves-light start_record">Включить запись</button>
+          {{/if}}
+          {{#if recording}}
+          <button class="btn waves-effect waves-light download_record">Скачать</button>
+          {{/if}}
+        </div>
+        {{/if}}
+      </div>
       <div class="paying">
         <div class="info">
           {{#if first}}
@@ -50,7 +68,7 @@
         <div class="buttons">
           {{#unless first}}
           {{#each form in liqpay_forms}}
-            {{{form}}}
+          {{{form}}}
           {{/each}}
           {{/unless}}
         </div>
