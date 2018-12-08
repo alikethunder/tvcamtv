@@ -51,7 +51,7 @@ WebApp.connectHandlers.use('/liqpay', (req, res, next) => {
             let stream = Streams.findOne({
               _id: streamId
             });
-            let m = stream.payed_till > moment().utc().valueOf() ? moment(payed_till) : moment();
+            let m = stream.payed_till > moment().utc().valueOf() ? moment(stream.payed_till) : moment();
             Streams.update({
               _id: streamId
             }, {
