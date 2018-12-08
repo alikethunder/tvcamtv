@@ -77,7 +77,7 @@ Template.channels_payment.events({
               'version': '3',
               language: Session.get('language'),
               /// test environment
-              sandbox: 1,
+              //sandbox: 1,
               result_url: `https://tvcamtv.com/channels_payment`,
               server_url: 'https://tvcamtv.com/liqpay'
             }, function (err, res) {
