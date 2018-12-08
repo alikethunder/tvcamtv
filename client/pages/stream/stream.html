@@ -43,13 +43,13 @@
         {{/if}}
         <div class="rec_buttons">
           {{#if record_in_progress}}
-          <span class="record_in_progress red-text">Идет запись</span>
-          <button class="btn waves-effect waves-light stop_record">Остановить</button>
+          <span class="record_in_progress red-text">{{t9n 'recording.record_in_progress'}}</span>
+          <button class="btn waves-effect waves-light stop_record">{{t9n 'recording.stop'}}</button>
           {{else}}
-          <button class="btn waves-effect waves-light start_record">Включить запись</button>
+          <button class="btn waves-effect waves-light start_record">{{t9n 'recording.record'}}</button>
           {{/if}}
           {{#if recording}}
-          <button class="btn waves-effect waves-light download_record">Скачать</button>
+          <button class="btn waves-effect waves-light download_record">{{t9n 'recording.download'}}</button>
           {{/if}}
         </div>
         {{/if}}
