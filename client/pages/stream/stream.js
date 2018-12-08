@@ -335,7 +335,7 @@ Template.stream.events({
     a.style.display = 'none';
     a.href = url;
     a.target = '_blank';
-    a.download = `${moment(t.variables.record_started).format('D MMM YYYY HH:mm:ss')} - ${moment(t.variables.record_finished).format('D MMM YYYY HH:mm:ss')}.webm`;
+    a.download = `${$('#name').val()} - ${moment(t.variables.record_started).format('D MMM YYYY HH:mm:ss')} - ${moment(t.variables.record_finished).format('D MMM YYYY HH:mm:ss')}.webm`;
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
