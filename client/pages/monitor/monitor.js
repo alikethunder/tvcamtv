@@ -11,7 +11,7 @@ import {
 
 Template.monitor.onCreated(function () {
   let t = this;
-  t.streams_cursor = Streams.find();
+  t.streams_cursor = Streams.find({}, { sort: { created: 1 }});
   t.sockets = {};
   t.sockets_to_disconnect = new Set();
   t.peers_to_disconnect = [];

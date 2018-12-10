@@ -3,7 +3,7 @@
     {{#each stream in streams}}
     <div class="video_container">
       <div class="video_name">
-        <span class="name">{{stream.name}}</span>
+        <a href="/stream/{{stream._id}}" class="name">{{stream.name}}</a>
         {{#unless @index}}
         <span class="green-text">{{t9n 'channel.free'}}</span>
         {{else}}
