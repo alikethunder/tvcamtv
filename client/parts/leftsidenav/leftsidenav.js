@@ -2,6 +2,9 @@ import {
   Streams
 } from '../../collections/Streams'
 import {
+  Partys
+} from '../../collections/Partys'
+import {
   deviceId
 } from '../../js/deviceId'
 import { Settings } from '../../collections/Settings';
@@ -33,5 +36,9 @@ Template.leftsidenav.helpers({
   },
   google_adsense_advertisement(){
     return Settings.findOne({_id: 'google_adsense_advertisement'}).content
+  },
+  partys(){
+    console.log(Partys.find().fetch());
+    return Partys.find().fetch();
   }
 });

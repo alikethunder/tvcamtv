@@ -17,6 +17,9 @@ import {
 import {
   Settings
 } from '../../collections/Settings'
+import {
+  EJSON
+} from 'meteor/ejson'
 
 Template.stream.onCreated(function () {
   let t = this;
@@ -43,7 +46,8 @@ Template.stream.onCreated(function () {
     record_in_progress: new ReactiveVar(false),
     recorded_blobs: new ReactiveVar([]),
     record_started: undefined,
-    record_finished: undefined
+    record_finished: undefined,
+    reactive_stream: new ReactiveVar()
   };
   t.mediaRecorder;
   t.liqpay_forms = new ReactiveVar([]);
@@ -80,7 +84,7 @@ Template.stream.onRendered(function () {
       }, delay)
     }
   }
-  t.autorun(() => {
+  t.autorun((c) => {
     if (Router.current().params._id) {
       Materialize.updateTextFields();
       if (t.socket || t.peerId || t.stream) {
@@ -96,13 +100,17 @@ Template.stream.onRendered(function () {
         delete t.to
       }
 
-      let stream = Template.stream.__helpers.get('stream').call();
+      let stream = Tracker.nonreactive(() => {
+        return Template.stream.__helpers.get('stream').call()
+      });
       //console.log('stream : ', stream);
       let expired_after = stream.payed_till - serverDate;
-      
+
       t.variables.expired.set(expired_after < 0);
 
-      if (Template.stream.__helpers.get('first').call() || expired_after > 0) {
+      if (Tracker.nonreactive(() => {
+          return Template.stream.__helpers.get('first').call()
+        }) || expired_after > 0) {
         //set timeout and reload if and when payed term will get expired
         if (expired_after > 0) {
           st(expired_after);
@@ -151,18 +159,21 @@ Template.stream.onRendered(function () {
 
   //reload page if stream constraints changed & if this is a peer
   t.autorun(() => {
-    let stream = Template.stream.__helpers.get('stream').call();
-    if (Router.current().params._id && stream.deviceId != deviceId) {
-      Streams.find({
-        _id: Router.current().params._id
-      }).observeChanges({
-        changed(id, stream) {
-          if (stream.constraints || stream.payed_till) {
-            //console.log('changed');
-            location.reload()
+    if (Router.current().params._id) {
+      if (Tracker.nonreactive(() => {
+          return Template.stream.__helpers.get('stream').call()
+        }).deviceId != deviceId) {
+        Streams.find({
+          _id: Router.current().params._id
+        }).observeChanges({
+          changed(id, stream) {
+            if (stream.constraints) {
+              //console.log('changed');
+              location.reload()
+            }
           }
-        }
-      });
+        });
+      }
     }
   });
 
@@ -270,7 +281,7 @@ Template.stream.helpers({
   recording() {
     return Template.instance().variables.recorded_blobs.get().length
   },
-  not_expired_or_first(exp, f){
+  not_expired_or_first(exp, f) {
     return !exp || f
   }
 });
@@ -286,6 +297,9 @@ Template.stream.events({
   },
   'blur #name'(e, t) {
     Meteor.call('update_stream_name', Router.current().params._id, e.target.value);
+  },
+  'blur #party'(e, t) {
+    Meteor.call('update_stream_party', Router.current().params._id, e.target.value);
   },
   'change select'(e, t) {
     t.variables.constraints[e.target.id] = !!e.target.value ? {
@@ -312,10 +326,10 @@ Template.stream.events({
       }
     }
     t.mediaRecorder.start(10);
-    t.record_timeout = Meteor.setTimeout(()=>{
+    t.record_timeout = Meteor.setTimeout(() => {
       $('.stop_record').click();
       $('.download_record').click();
-      Meteor.setTimeout(()=>{
+      Meteor.setTimeout(() => {
         $('.start_record').click()
       }, 100);
     }, 3600000);

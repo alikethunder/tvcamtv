@@ -7,6 +7,10 @@
         <label for="name">{{t9n 'channel.channel_name'}}</label>
       </div>
       <div class="input-field col s3">
+        <input id="party" type="text">
+        <label for="party">{{t9n 'channel.channel_party'}}</label>
+      </div>
+      <div class="input-field col s3">
         <select id="video">
           <option value="" selected>{{#if video}}{{t9n 'channel.without_video'}}{{else}}{{t9n 'channel.no_available_devices'}}{{/if}}</option>
           {{#each video}}
@@ -25,8 +29,8 @@
         <label>{{t9n 'channel.select'}} {{t9n 'channel.audio_device'}}</label>
       </div>
     </div>
-    <a class="waves-effect waves-light btn add_device_btn"><i class="material-icons left">check</i>{{t9n 'channel.add'}} {{t9n 'channel.channel'}}</a>
     <video id="output" autoplay playsinline controls></video>
     <div class="compability_info">{{t9n 'compability_info'}}</div>
+    <a class="waves-effect waves-light btn add_device_btn"><i class="material-icons left">check</i>{{t9n 'channel.add'}} {{t9n 'channel.channel'}}</a>
   </div>
 </template>

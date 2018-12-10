@@ -8,6 +8,7 @@ import {
 import {
   ServerDate
 } from '../../../lib/collections/serverDate';
+//Router.current().params.query.tab;
 
 Template.monitor.onCreated(function () {
   let t = this;
