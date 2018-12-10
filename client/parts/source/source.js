@@ -24,7 +24,7 @@ Template.source.onRendered(function () {
   const PORT = Settings.findOne({
     _id: 'socket'
   }).port;
-  t.peers = {};
+  t.connections = {};
 
   Peers.find({
     deviceId
@@ -32,27 +32,28 @@ Template.source.onRendered(function () {
     added(_id, peer) {
       //console.log('peer added : ', _id, peer);
       //start socket
-      let socket = io(PORT);
-      //console.log('socket : ', socket);
-      socket.on('connect', function () {
-        //console.log(socket.id);
+      t.connections[_id] = {};
+      t.connections[_id].socket = io(PORT);
+      //console.log('socket : ', t.connections[_id].socket);
+      t.connections[_id].socket.on('connect', function () {
+        //console.log(t.connections[_id].socket.id);
         navigator.mediaDevices.getUserMedia(peer.constraints)
           .then(function (stream) {
-            let source_peer = new Peer({
+            t.connections[_id].peer = new Peer({
               initiator: true,
               stream: stream
             });
 
-            source_peer.on('signal', function (data) {
-              socket.emit('signal', {
+            t.connections[_id].peer.on('signal', function (data) {
+              t.connections[_id].socket.emit('signal', {
                 signal: data,
                 to: peer.socketId, //to
-                from: socket.id
+                from: t.connections[_id].socket.id
               });
             });
 
-            socket.on('signal', function (data) {
-              source_peer.signal(data.signal);
+            t.connections[_id].socket.on('signal', function (data) {
+              t.connections[_id].peer.signal(data.signal);
             });
           })
           .catch(function (err) {
@@ -62,7 +63,8 @@ Template.source.onRendered(function () {
     },
     removed(_id) {
       //console.log('peer removed : ', _id);
-
+      t.connections[_id].socket.close();
+      t.connections[_id].peer.destroy();
     }
   });
 });

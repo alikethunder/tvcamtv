@@ -149,15 +149,16 @@ Template.stream.onRendered(function () {
     }
   });
 
-  //reload page if stream constraints changed
+  //reload page if stream constraints changed & if this is a peer
   t.autorun(() => {
-    if (Router.current().params._id) {
+    let stream = Template.stream.__helpers.get('stream').call();
+    if (Router.current().params._id && stream.deviceId != deviceId) {
       Streams.find({
         _id: Router.current().params._id
       }).observeChanges({
         changed(id, stream) {
           if (stream.constraints || stream.payed_till) {
-            console.log('changed');
+            //console.log('changed');
             location.reload()
           }
         }
