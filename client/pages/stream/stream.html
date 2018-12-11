@@ -32,8 +32,6 @@
       </div>
     </div>
     {{/if}}
-    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}}
-      {{t9n 'channel.channel'}}</a>
     <div class="video_container">
       <div class="video_plus_rec_buttons">
         <video id="output" autoplay playsinline controls></video>
@@ -65,15 +63,16 @@
           {{/if}}
           {{/if}}
         </div>
+        {{#unless first}}
         <div class="buttons">
-          {{#unless first}}
           {{#each form in liqpay_forms}}
           {{{form}}}
           {{/each}}
-          {{/unless}}
         </div>
         <div class="currency_info">{{{t9n 'currency_info'}}}</div>
+        {{/unless}}
       </div>
     </div>
+    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}} {{t9n 'channel.channel'}}</a>
   </div>
 </template>
