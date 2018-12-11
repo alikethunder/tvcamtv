@@ -9,10 +9,6 @@
         <label for="name">{{t9n 'channel.channel_name'}}</label>
       </div>
       <div class="input-field col s3">
-        <input id="party" type="text" value="{{stream.party}}">
-        <label for="party">{{t9n 'channel.channel_party'}}</label>
-      </div>
-      <div class="input-field col s3">
         <select id="video">
           <option value="" selected="{{isEqual '' stream.constraints.video.deviceId}}">{{#if video}} {{t9n
             'channel.without_video'}} {{else}} {{t9n 'channel.no_available_devices'}} {{/if}}</option>
@@ -36,6 +32,8 @@
       </div>
     </div>
     {{/if}}
+    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}}
+      {{t9n 'channel.channel'}}</a>
     <div class="video_container">
       <div class="video_plus_rec_buttons">
         <video id="output" autoplay playsinline controls></video>
@@ -77,6 +75,5 @@
         <div class="currency_info">{{{t9n 'currency_info'}}}</div>
       </div>
     </div>
-    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}} {{t9n 'channel.channel'}}</a>
   </div>
 </template>

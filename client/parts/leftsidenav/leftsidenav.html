@@ -19,48 +19,16 @@
         <div class="collapsible-header"><i class="material-icons">videocam</i>{{t9n 'channel.channels'}}<i class="material-icons expand">expand_more</i><i
             class="material-icons expand_less">expand_less</i></div>
         <div class="collapsible-body">
-          {{#if streams}}
-          <ul class="collapsible partys" data-collapsible="accordion">
-            {{#each party in partys}}
+          <ul>
+            {{#each streams}}
             <li>
-              <div class="collapsible-header">{{party.name}}<i class="material-icons expand">expand_more</i><i class="material-icons expand_less">expand_less</i></div>
-              <div class="collapsible-body">
-                <ul>
-                    <li>
-                        <a href="/monitor?party={{party._id}}" class="collapsible_link">Просмотр партии</a>
-                    </li>
-                  {{#each stream in streams}}
-                  {{#if isEqual stream.party party.name}}
-                  <li>
-                    <a href="/stream/{{stream._id}}" class="collapsible_link">{{#if stream.name}}{{stream.name}}{{else}}{{t9n 'channel.channel'}} {{@index}}{{/if}}</a>
-                  </li>
-                  {{/if}}
-                  {{/each}}
-                </ul>
-              </div>
+              <a href="/stream/{{_id}}" class="collapsible_link">{{#if name}}{{name}}{{else}}{{t9n 'channel.channel'}}
+                {{@index}}{{/if}}</a>
             </li>
+            {{else}}
+            <span>{{t9n 'channel.no_channels'}}</span>
             {{/each}}
-            <li>
-                <div class="collapsible-header">Остальные<i class="material-icons expand">expand_more</i><i class="material-icons expand_less">expand_less</i></div>
-                <div class="collapsible-body">
-                  <ul>
-                      <li>
-                          <a href="/monitor?party=others" class="collapsible_link">Просмотр партии</a>
-                      </li>
-                    {{#each stream in streams}}
-                    {{#if isEqual stream.party ''}}
-                    <li>
-                      <a href="/stream/{{stream._id}}" class="collapsible_link">{{#if stream.name}}{{stream.name}}{{else}}{{t9n 'channel.channel'}} {{@index}}{{/if}}</a>
-                    </li>
-                    {{/if}}
-                    {{/each}}
-                  </ul>
-                </div>
-              </li>
           </ul>
-          {{else}}
-          <span>{{t9n 'channel.no_channels'}}</span>
-          {{/if}}
         </div>
       </li>
       <li>

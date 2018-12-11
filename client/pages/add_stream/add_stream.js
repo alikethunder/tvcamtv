@@ -50,7 +50,6 @@ Template.add_stream.events({
     };
     if (st.constraints.audio || st.constraints.video) {
       st.name = t.$('#name').val();
-      st.party = t.$('#party').val();
       st.deviceId = deviceId;
       Meteor.call('add_stream', st, function (err, _id) {
         if (!err) {
