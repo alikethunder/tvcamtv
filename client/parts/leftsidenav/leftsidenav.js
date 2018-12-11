@@ -14,7 +14,7 @@ Template.leftsidenav.onCreated(function () {
 Template.leftsidenav.onRendered(function () {
   let t = this;
   t.$('.collapsible').collapsible();
-
+  t.$('#leftsidenav').removeClass('leftsidenav_closed');
 });
 
 Template.leftsidenav.helpers({
