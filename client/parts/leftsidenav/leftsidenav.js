@@ -4,7 +4,9 @@ import {
 import {
   deviceId
 } from '../../js/deviceId'
-import { Settings } from '../../collections/Settings';
+import {
+  Settings
+} from '../../collections/Settings';
 
 Template.leftsidenav.onCreated(function () {
   let t = this;
@@ -15,23 +17,48 @@ Template.leftsidenav.onRendered(function () {
   let t = this;
   t.$('.collapsible').collapsible();
   t.$('#leftsidenav').removeClass('leftsidenav_closed');
+
+  new MutationObserver((m) => {
+    m.forEach((m) => {
+      if (m.attributeName == 'class') {
+        if ($(m.target).prop(m.attributeName)) {
+          $('.leftsidenav_control i').addClass('rotate')
+        } else {
+          $('.leftsidenav_control i').removeClass('rotate')
+        }
+      }
+    });
+  }).observe(t.$('#leftsidenav')[0], {
+    attributes: true
+  });
+
 });
 
 Template.leftsidenav.helpers({
   streams() {
-    return Streams.find({}, { sort: { created: 1 }}).fetch()
+    return Streams.find({}, {
+      sort: {
+        created: 1
+      }
+    }).fetch()
   },
-  ownStreams(){
+  ownStreams() {
     /// finish render stream from this device devided
-    return Streams.find({deviceId}).fetch()
+    return Streams.find({
+      deviceId
+    }).fetch()
   },
-  more_than_one_channel(streams){
+  more_than_one_channel(streams) {
     return !!(streams.length - 1)
   },
-  aliexpress_advertisement(){
-    return Settings.findOne({_id: 'aliexpress_advertisement'}).content
+  aliexpress_advertisement() {
+    return Settings.findOne({
+      _id: 'aliexpress_advertisement'
+    }).content
   },
-  google_adsense_advertisement(){
-    return Settings.findOne({_id: 'google_adsense_advertisement'}).content
+  google_adsense_advertisement() {
+    return Settings.findOne({
+      _id: 'google_adsense_advertisement'
+    }).content
   }
 });
