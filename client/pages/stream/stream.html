@@ -1,7 +1,6 @@
 <template name="stream">
   <div class="add_device">
     <h5>{{stream.name}}</h5>
-    <h4>{{serverDate}}</h4>
     {{#if sameDevice stream.deviceId}}
     <div class="form">
       <div class="input-field col s3">
@@ -34,7 +33,34 @@
     {{/if}}
     <div class="video_container">
       <div class="video_plus_rec_buttons">
+        {{#if source_available stream.deviceId}}
+        {{#if channel_loading}}
+        <span class="green-text loading_info">{{t9n 'channel.channel_available'}}</span>
+        <span class="loading_info">{{t9n 'channel.loading'}}</span>
+        <div class="center preloader_back">
+          <div class="preloader-wrapper active">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div>
+              <div class="gap-patch">
+                <div class="circle"></div>
+              </div>
+              <div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{else}}
         <video id="output" autoplay playsinline controls></video>
+        {{/if}}
+        {{else}}
+        <span class="red-text loading_info">{{t9n 'channel.channel_unavailable'}}</span>
+        {{/if}}
+
+        {{#if source_available stream.deviceId}}
+        {{#unless channel_loading}}
         {{#if not_expired_or_first expired first}}
         {{#if record_in_progress}}
         <div class="record_info">{{t9n 'record_info'}}</div>
@@ -50,6 +76,8 @@
           <button class="btn waves-effect waves-light download_record">{{t9n 'recording.download'}}</button>
           {{/if}}
         </div>
+        {{/if}}
+        {{/unless}}
         {{/if}}
       </div>
       <div class="paying">
@@ -73,6 +101,7 @@
         {{/unless}}
       </div>
     </div>
-    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}} {{t9n 'channel.channel'}}</a>
+    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}}
+      {{t9n 'channel.channel'}}</a>
   </div>
 </template>

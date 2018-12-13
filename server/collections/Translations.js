@@ -8,8 +8,8 @@ Meteor.publish('translations', function () {
   return Translations.find()
 });
 
-Translations.update({_id: 'ru'}, {$set: {'translations.record_info': 'Для избежания перегрузки запись ведется и сохраняется по часу. Запись можно остановить в любой момент.', 'translations.recording': {'record': 'Включить запись', 'stop': 'стоп', 'download': 'Скачать', 'record_in_progress': 'Идет запись'}}});
+Translations.update({_id: 'ru'}, {$set: {'translations.channel.channel_available': 'Канал доступeн', 'translations.channel.channel_unavailable': 'Канал недоступeн', 'translations.channel.loading': 'Загружается, пожалуйста, подождите'}});
 
-Translations.update({_id: 'uk'}, {$set: {'translations.record_info': 'Для уникнення перевантаження запис ведеться і зберігається по годині. Запис можна зупинити в будь-який момент.', 'translations.recording': {'record': 'Включити запис', 'stop': 'стоп', 'download': 'скачати', 'record_in_progress': 'Йде запис'}}});
+Translations.update({_id: 'uk'}, {$set: {'translations.channel.channel_available': 'Канал доступний', 'translations.channel.channel_unavailable': 'Канал недоступний', 'translations.channel.loading': 'Завантажується, будь ласка, зачекайте'}});
 
-Translations.update({_id: 'en'}, {$set: {'translations.record_info': 'To avoid overloading, the recording is kept and saved by the hour. Recording can be stopped at any time.', 'translations.recording': {'record': 'record', 'stop': 'stop', 'download': 'download', 'record_in_progress': 'Record in progress'}}});
+Translations.update({_id: 'en'}, {$set: {'translations.channel.channel_available': 'Channel is available', 'translations.channel.channel_unavailable': 'Channel is unavailable', 'translations.channel.loading': 'Loading, please, wait'}});

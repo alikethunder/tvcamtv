@@ -9,6 +9,9 @@ import {
   Streams
 } from '../../collections/Streams'
 import {
+  Sources
+} from '../../collections/Sources'
+import {
   ServerDate
 } from '../../../lib/collections/serverDate';
 import {
@@ -20,6 +23,7 @@ import {
 
 Template.stream.onCreated(function () {
   let t = this;
+
   t.autorun(() => {
     t.subscribe('stream', Router.current().params._id);
     t.subscribe('peers', Router.current().params._id);
@@ -43,7 +47,8 @@ Template.stream.onCreated(function () {
     record_in_progress: new ReactiveVar(false),
     recorded_blobs: new ReactiveVar([]),
     record_started: undefined,
-    record_finished: undefined
+    record_finished: undefined,
+    channel_loading: new ReactiveVar(true)
   };
   t.mediaRecorder;
   t.liqpay_forms = new ReactiveVar([]);
@@ -99,6 +104,7 @@ Template.stream.onRendered(function () {
       let stream = Tracker.nonreactive(() => {
         return Template.stream.__helpers.get('stream').call()
       });
+      t.subscribe('source', stream.deviceId);
       //console.log('stream : ', stream);
       let expired_after = stream.payed_till - serverDate;
 
@@ -114,6 +120,7 @@ Template.stream.onRendered(function () {
 
         if (stream.deviceId == deviceId) {
           //source pc
+          t.variables.channel_loading.set(false);
           t.variables.constraints = stream.constraints;
           start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
             t.stream = stream;
@@ -143,8 +150,9 @@ Template.stream.onRendered(function () {
               });
 
               peer.on('stream', function (stream) {
+                t.variables.channel_loading.set(false);
                 t.stream = stream;
-                document.getElementById('output').srcObject = stream;
+                Meteor.defer(()=>{document.getElementById('output').srcObject = stream;})
               });
             });
           });
@@ -279,6 +287,12 @@ Template.stream.helpers({
   },
   not_expired_or_first(exp, f) {
     return !exp || f
+  },
+  source_available(_id){
+    return Sources.findOne({_id})
+  },
+  channel_loading(){
+    return Template.instance().variables.channel_loading.get()
   }
 });
 

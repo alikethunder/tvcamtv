@@ -17,6 +17,12 @@ let io = require('socket.io-client');
 Template.source.onCreated(function () {
   let t = this;
   t.subscribe('device_peers', deviceId);
+  
+  Meteor.call('add_source', deviceId);
+
+  window.addEventListener('beforeunload', function () {
+    Meteor.call('remove_source', deviceId);
+  });
 });
 
 Template.source.onRendered(function () {
@@ -67,4 +73,10 @@ Template.source.onRendered(function () {
       t.connections[_id].peer.destroy();
     }
   });
+});
+
+Template.source.onDestroyed(function(){
+  let t = this;
+
+  Meteor.call('remove_source', deviceId);
 });
