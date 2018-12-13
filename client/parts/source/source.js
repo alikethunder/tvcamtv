@@ -23,6 +23,14 @@ Template.source.onCreated(function () {
   window.addEventListener('beforeunload', function () {
     Meteor.call('remove_source', deviceId);
   });
+
+  window.addEventListener('unload', function () {
+    Meteor.call('remove_source', deviceId);
+  });
+
+  window.addEventListener('pagehide', function () {
+    Meteor.call('remove_source', deviceId);
+  });
 });
 
 Template.source.onRendered(function () {

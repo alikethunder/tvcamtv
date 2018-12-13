@@ -41,6 +41,30 @@ Template.stream.onCreated(function () {
     delete t.to
   });
 
+  window.addEventListener('unload', function () {
+    t.peerId && Meteor.call('remove_receiver', t.peerId);
+    t.socket && t.socket.emit('close_connection', {
+      to: t.to
+    });
+    t.stream && t.stream.getTracks().forEach(track => track.stop());
+    delete t.socket;
+    delete t.peerId;
+    delete t.stream;
+    delete t.to
+  });
+
+  window.addEventListener('pagehide', function () {
+    t.peerId && Meteor.call('remove_receiver', t.peerId);
+    t.socket && t.socket.emit('close_connection', {
+      to: t.to
+    });
+    t.stream && t.stream.getTracks().forEach(track => track.stop());
+    delete t.socket;
+    delete t.peerId;
+    delete t.stream;
+    delete t.to
+  });
+
   t.variables = {
     devices: new ReactiveVar({}),
     expired: new ReactiveVar(false),

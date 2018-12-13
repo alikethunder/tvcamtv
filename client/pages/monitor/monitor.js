@@ -24,6 +24,20 @@ Template.monitor.onCreated(function () {
       sockets: [...t.sockets_to_disconnect]
     });
   });
+
+  window.addEventListener('unload', function () {
+    Meteor.call('remove_receivers', t.peers_to_disconnect);
+    t.disconnecting_socket.emit('close_connections', {
+      sockets: [...t.sockets_to_disconnect]
+    });
+  });
+
+  window.addEventListener('pagehide', function () {
+    Meteor.call('remove_receivers', t.peers_to_disconnect);
+    t.disconnecting_socket.emit('close_connections', {
+      sockets: [...t.sockets_to_disconnect]
+    });
+  });
 });
 
 Template.monitor.onRendered(function () {
