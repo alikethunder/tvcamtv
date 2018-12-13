@@ -11,14 +11,62 @@
         {{/unless}}
       </div>
       {{#unless @index}}
-      <video id="{{stream._id}}" autoplay playsinline controls></video>
+      {{#if source_available stream.deviceId}}
+        {{#if channel_loading stream._id}}
+          <span class="green-text loading_info">{{t9n 'channel.channel_available'}}</span>
+          <span class="loading_info">{{t9n 'channel.loading'}}</span>
+          <div class="center preloader_back">
+            <div class="preloader-wrapper active">
+              <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <video id="{{stream._id}}" autoplay playsinline controls></video>
+        {{/if}}
       {{else}}
-      {{#if expired stream.payed_till}}
-      <span class="red-text center expired">{{t9n 'channel.payment expired'}}</span>
-      <a href="/channels_payment" class="btn waves-effect waves-light green"><i class="material-icons left">payment</i>{{t9n 'channels_payment'}}</a>
-      {{else}}
-      <video id="{{stream._id}}" autoplay playsinline controls></video>
+        <span class="red-text loading_info">{{t9n 'channel.channel_unavailable'}}</span>
       {{/if}}
+      {{else}}
+        {{#if expired stream.payed_till}}
+          <span class="red-text center expired">{{t9n 'channel.payment expired'}}</span>
+          <a href="/channels_payment" class="btn waves-effect waves-light green"><i class="material-icons left">payment</i>{{t9n 'channels_payment'}}</a>
+        {{else}}
+          {{#if source_available stream.deviceId}}
+            {{#if channel_loading stream._id}}
+              <span class="green-text loading_info">{{t9n 'channel.channel_available'}}</span>
+              <span class="loading_info">{{t9n 'channel.loading'}}</span>
+              <div class="center preloader_back">
+                <div class="preloader-wrapper active">
+                  <div class="spinner-layer spinner-green-only">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                      <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {{else}}
+              <video id="{{stream._id}}" autoplay playsinline controls></video>
+            {{/if}}
+          {{else}}
+          <span class="red-text loading_info">{{t9n 'channel.channel_unavailable'}}</span>
+          {{/if}}
+        {{/if}}
       {{/unless}}
     </div>
     {{/each}}

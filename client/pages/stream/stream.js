@@ -288,9 +288,6 @@ Template.stream.helpers({
   not_expired_or_first(exp, f) {
     return !exp || f
   },
-  source_available(_id){
-    return Sources.findOne({_id})
-  },
   channel_loading(){
     return Template.instance().variables.channel_loading.get()
   }

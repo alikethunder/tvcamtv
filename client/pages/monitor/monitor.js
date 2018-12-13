@@ -16,6 +16,7 @@ Template.monitor.onCreated(function () {
   t.sockets_to_disconnect = new Set();
   t.peers_to_disconnect = [];
   t.disconnecting_socket;
+  t.channels_loading = {};
 
   window.addEventListener('beforeunload', function () {
     Meteor.call('remove_receivers', t.peers_to_disconnect);
@@ -33,6 +34,9 @@ Template.monitor.onRendered(function () {
   t.streams_cursor.fetch().forEach((stream, index) => {
     //console.log(stream, index);
     if (!index || stream.payed_till > serverDate){
+
+      t.channels_loading[stream._id] = new ReactiveVar(true);
+
       t.sockets[stream._id] = {
         socket: require('socket.io-client')(PORT),
         peerId: '',
@@ -64,7 +68,10 @@ Template.monitor.onRendered(function () {
           });
   
           peer.on('stream', function (data) {
-            document.getElementById(stream._id).srcObject = data;
+            t.channels_loading[stream._id].set(false);
+            Meteor.defer(()=>{
+              document.getElementById(stream._id).srcObject = data;
+            })
           });
         });
       });
@@ -107,6 +114,9 @@ Template.monitor.helpers({
   },
   expired(payed_till){
     return payed_till < ServerDate.findOne().date
+  },
+  channel_loading(_id){
+    return Template.instance().channels_loading[_id].get()
   }
 });
 
