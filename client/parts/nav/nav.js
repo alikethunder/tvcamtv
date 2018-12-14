@@ -4,8 +4,9 @@ Template.nav.onCreated(function(){
 
 Template.nav.onRendered(function(){
   let t = this;
-
-  t.$('.lang').val(localStorage.getItem('language') || 'en');
+  t.autorun(()=>{
+    t.$('.lang').val(Meteor.user() && Meteor.user().profile && Meteor.user().profile.language || localStorage.getItem('language') || 'en');
+  });
 });
 
 Template.nav.events({
@@ -23,6 +24,7 @@ Template.nav.events({
     moment.locale(e.target.value);
     document.title = `tvcamtv - ${T9n.get('landing.header')}`;
     document.description = `${T9n.get('landing.tabs.7.body')}`;
+    Meteor.call("update_language", e.target.value);
     Meteor.setTimeout(()=>{
       $('select').not('.lang').material_select();
     }, 0);
