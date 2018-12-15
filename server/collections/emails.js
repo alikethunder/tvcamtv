@@ -87,7 +87,7 @@ emails.upsert({_id: 'resetPassword:ru'}, {$set: {subject: 'Восстановл�
                     <td valign="top" align="center">
                                     <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="350"><tr><td align="center" valign="top"><![endif]-->
                       <div class="mobile-full" style="display: inline-block; max-width: 350px; vertical-align: top; width: 100%;">
-                        <a target="_new" href="https://tvcamtv.com" style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #f3f3f3; text-decoration: none;">tvcamtv</a>
+                        <a target="_new" href="https://tvcamtv.com" style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-decoration: none;">tvcamtv</a>
                       </div>
                                     <!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
                     </td>
@@ -112,6 +112,12 @@ emails.upsert({_id: 'resetPassword:ru'}, {$set: {subject: 'Восстановл�
                     <td>
                       <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
+                        <tr>
+                            <td style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-align: left;"> <span style="color: #424242;">Вы получили это письмо, потому что сайту было сообщено, что вы забыли пароль. Если вы этого не сообщали, не совершайте никаких действий.</span> </td>
+                          </tr>
+                          <tr>
+                            <td height="9" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                          </tr>
                           <tr>
                             <td style="font-size: 25px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-align: left;"> <span style="color: #424242;">                   Для установки нового пароля перейдите по ссылке:                   </span> </td>
                           </tr>
@@ -226,7 +232,7 @@ emails.upsert({_id: 'resetPassword:uk'}, {$set: {subject: 'Поновлення 
                     <td valign="top" align="center">
                                     <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="350"><tr><td align="center" valign="top"><![endif]-->
                       <div class="mobile-full" style="display: inline-block; max-width: 350px; vertical-align: top; width: 100%;">
-                        <a target="_new" href="https://tvcamtv.com" style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #f3f3f3; text-decoration: none;">tvcamtv</a>
+                        <a target="_new" href="https://tvcamtv.com" style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-decoration: none;">tvcamtv</a>
                       </div>
                                     <!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
                     </td>
@@ -251,6 +257,12 @@ emails.upsert({_id: 'resetPassword:uk'}, {$set: {subject: 'Поновлення 
                     <td>
                       <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
+                        <tr>
+                        <td style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-align: left;"> <span style="color: #424242;">Ви отримали це письмо, тому що сайту було повiдомлено, що ви забули пароль. Якщо ви цього не повiдомляли, не скоюйте нiяких дiянь.</span> </td>
+                      </tr>
+                      <tr>
+                        <td height="9" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                      </tr>
                           <tr>
                             <td style="font-size: 25px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-align: left;"> <span style="color: #424242;">                   Для встановлення нового паролю перейдiть за посиланням:                   </span> </td>
                           </tr>
@@ -365,7 +377,7 @@ emails.upsert({_id: 'resetPassword:en'}, {$set: {subject: 'Password regeneration
                     <td valign="top" align="center">
                                     <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="350"><tr><td align="center" valign="top"><![endif]-->
                       <div class="mobile-full" style="display: inline-block; max-width: 350px; vertical-align: top; width: 100%;">
-                        <a target="_new" href="https://tvcamtv.com" style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #f3f3f3; text-decoration: none;">tvcamtv</a>
+                        <a target="_new" href="https://tvcamtv.com" style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-decoration: none;">tvcamtv</a>
                       </div>
                                     <!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
                     </td>
@@ -390,6 +402,12 @@ emails.upsert({_id: 'resetPassword:en'}, {$set: {subject: 'Password regeneration
                     <td>
                       <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
+                        <tr>
+                            <td style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-align: left;"> <span style="color: #424242;">You received this email because the site was reported to that you forgot your password. If you have not reported this, do not take any action.</span> </td>
+                          </tr>
+                          <tr>
+                            <td height="9" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                          </tr>
                           <tr>
                             <td style="font-size: 25px; font-family: Arial, Helvetica, sans-serif; color: #424242; text-align: left;"> <span style="color: #424242;">                   To reset password please follow the link below:                   </span> </td>
                           </tr>
