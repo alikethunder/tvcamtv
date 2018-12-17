@@ -7,9 +7,3 @@ Translations.find().fetch().forEach((language) => {
 Meteor.publish('translations', function () {
   return Translations.find()
 });
-
-Translations.update({_id: 'ru'}, {$set: {'translations.Required Field': 'Обязательное поле'}});
-
-Translations.update({_id: 'uk'}, {$set: {'translations.Required Field': "Обов'язкове поле"}});
-
-Translations.update({_id: 'en'}, {$set: {'translations.Required Field': 'Required field'}});
