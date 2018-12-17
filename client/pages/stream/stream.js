@@ -24,45 +24,28 @@ import {
 Template.stream.onCreated(function () {
   let t = this;
 
+  t.clean_data = function () {
+    // close previous collection && clear all its data
+    t.peerId && Meteor.call('remove_receiver', t.peerId);
+    t.socket && t.socket.emit('close_connection', {
+      to: t.to
+    });
+    t.stream && t.stream.getTracks().forEach(track => track.stop());
+    delete t.socket;
+    delete t.peerId;
+    delete t.stream;
+    delete t.to
+  }
+
   t.autorun(() => {
     t.subscribe('stream', Router.current().params._id);
     t.subscribe('peers', Router.current().params._id);
   });
 
-  window.addEventListener('beforeunload', function () {
-    t.peerId && Meteor.call('remove_receiver', t.peerId);
-    t.socket && t.socket.emit('close_connection', {
-      to: t.to
+  ['beforeunload', 'unload', 'pagehide'].forEach((ev) => {
+    window.addEventListener(ev, function () {
+      Blaze.remove(t.view);
     });
-    t.stream && t.stream.getTracks().forEach(track => track.stop());
-    delete t.socket;
-    delete t.peerId;
-    delete t.stream;
-    delete t.to
-  });
-
-  window.addEventListener('unload', function () {
-    t.peerId && Meteor.call('remove_receiver', t.peerId);
-    t.socket && t.socket.emit('close_connection', {
-      to: t.to
-    });
-    t.stream && t.stream.getTracks().forEach(track => track.stop());
-    delete t.socket;
-    delete t.peerId;
-    delete t.stream;
-    delete t.to
-  });
-
-  window.addEventListener('pagehide', function () {
-    t.peerId && Meteor.call('remove_receiver', t.peerId);
-    t.socket && t.socket.emit('close_connection', {
-      to: t.to
-    });
-    t.stream && t.stream.getTracks().forEach(track => track.stop());
-    delete t.socket;
-    delete t.peerId;
-    delete t.stream;
-    delete t.to
   });
 
   t.variables = {
@@ -113,16 +96,7 @@ Template.stream.onRendered(function () {
     if (Router.current().params._id) {
       Materialize.updateTextFields();
       if (t.socket || t.peerId || t.stream) {
-        // close previous collection && clear all its data
-        t.peerId && Meteor.call('remove_receiver', t.peerId);
-        t.socket && t.socket.emit('close_connection', {
-          to: t.to
-        });
-        t.stream && t.stream.getTracks().forEach(track => track.stop());
-        delete t.socket;
-        delete t.peerId;
-        delete t.stream;
-        delete t.to
+        t.clean_data();
       }
 
       let stream = Tracker.nonreactive(() => {
@@ -211,7 +185,7 @@ Template.stream.onRendered(function () {
   }).url, function (err, res) {
     //console.log(err, res);
     if (!err) {
-      let currency = Meteor.user().profile.currency;
+      let currency = Meteor.user().profile.currency || "USD";
       let rate;
       if (currency == "UAH") {
         rate = res.data.find(rate => rate.base_ccy == "UAH" && rate.ccy == "USD").sale;
@@ -257,15 +231,7 @@ Template.stream.onRendered(function () {
 
 Template.stream.onDestroyed(function () {
   let t = this;
-  t.peerId && Meteor.call('remove_receiver', t.peerId);
-  t.socket && t.socket.emit('close_connection', {
-    to: t.to
-  });
-  t.stream && t.stream.getTracks().forEach(track => track.stop());
-  delete t.socket;
-  delete t.peerId;
-  delete t.stream;
-  delete t.to
+  t.clean_data();
 });
 
 Template.stream.helpers({

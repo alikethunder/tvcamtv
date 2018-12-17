@@ -42,14 +42,8 @@ Template.leftsidenav.helpers({
       }
     }).fetch()
   },
-  ownStreams() {
-    /// finish render stream from this device devided
-    return Streams.find({
-      deviceId
-    }).fetch()
-  },
-  more_than_one_channel(streams) {
-    return !!(streams.length - 1)
+  more_than_one_channel(l) {
+    return l > 1
   },
   aliexpress_advertisement() {
     return Settings.findOne({

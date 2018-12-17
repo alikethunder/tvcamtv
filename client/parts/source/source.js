@@ -19,17 +19,11 @@ Template.source.onCreated(function () {
   t.subscribe('device_peers', deviceId);
   
   Meteor.call('add_source', deviceId);
-
-  window.addEventListener('beforeunload', function () {
-    Meteor.call('remove_source', deviceId);
-  });
-
-  window.addEventListener('unload', function () {
-    Meteor.call('remove_source', deviceId);
-  });
-
-  window.addEventListener('pagehide', function () {
-    Meteor.call('remove_source', deviceId);
+  
+  ['beforeunload', 'unload', 'pagehide'].forEach((ev) => {
+    window.addEventListener(ev, function () {
+      Blaze.remove(t.view);
+    });
   });
 });
 
