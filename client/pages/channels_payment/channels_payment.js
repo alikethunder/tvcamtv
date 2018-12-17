@@ -52,7 +52,7 @@ Template.channels_payment.events({
       }).url, function (err, res) {
         //console.log(err, res);
         if (!err) {
-          let currency = Meteor.user().profile.currency;
+          let currency = Meteor.user().profile.currency || "USD";
           let rate;
           if (currency == "UAH") {
             rate = res.data.find(rate => rate.base_ccy == "UAH" && rate.ccy == "USD").sale;
