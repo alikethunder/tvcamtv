@@ -22,6 +22,10 @@ Template.monitor.onCreated(function () {
   t.disconnecting_socket;
   t.channels_loading = {};
 
+  t.streams_cursor.fetch().forEach((stream) => {
+    t.channels_loading[stream._id] = new ReactiveVar(true);
+  });
+  
   ['beforeunload', 'unload', 'pagehide'].forEach((ev) => {
     window.addEventListener(ev, function () {
       Blaze.remove(t.view);
@@ -39,8 +43,6 @@ Template.monitor.onRendered(function () {
   t.streams_cursor.fetch().forEach((stream, index) => {
     //console.log(stream, index);
     if (!index || stream.payed_till > serverDate) {
-
-      t.channels_loading[stream._id] = new ReactiveVar(true);
 
       t.sockets[stream._id] = {
         socket: require('socket.io-client')(PORT),
