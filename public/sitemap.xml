@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
    <url>
       <loc>https://www.tvcamtv.com/en</loc>
+      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/en"/>
+      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/ru"/>
+      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/uk"/>
    </url>
    <url>
       <loc>https://www.tvcamtv.com/ru</loc>
+      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/en"/>
+      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/ru"/>
+      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/uk"/>
    </url>
    <url>
       <loc>https://www.tvcamtv.com/uk</loc>
+      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/en"/>
+      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/ru"/>
+      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/uk"/>
    </url>
    <url>
       <loc>https://www.tvcamtv.com/oferta/en</loc>
+      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/oferta/en"/>
+      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/oferta/ru"/>
+      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/oferta/uk"/>
    </url>
    <url>
       <loc>https://www.tvcamtv.com/oferta/ru</loc>
+      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/oferta/en"/>
+      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/oferta/ru"/>
+      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/oferta/uk"/>
    </url>
    <url>
       <loc>https://www.tvcamtv.com/oferta/uk</loc>
+      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/oferta/en"/>
+      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/oferta/ru"/>
+      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/oferta/uk"/>
    </url>
 </urlset> 
