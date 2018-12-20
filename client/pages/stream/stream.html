@@ -32,6 +32,7 @@
     </div>
     {{/if}}
     <div class="video_container">
+      {{#if not_expired_or_first expired first}}
       <div class="video_plus_rec_buttons">
         {{#if source_available stream.deviceId}}
         {{#if channel_loading}}
@@ -80,6 +81,7 @@
         {{/unless}}
         {{/if}}
       </div>
+      {{/if}}
       <div class="paying">
         <div class="info">
           {{#if first}}
