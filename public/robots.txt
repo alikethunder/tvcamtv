@@ -7,6 +7,7 @@ Allow: /sitemap.xml
 Allow: /oferta/ru
 Allow: /oferta/en
 Allow: /oferta/uk
+Allow: /favicon.png
 Disallow: /*
 Sitemap: https://tvcamtv.com/sitemap.xml
 
