@@ -1,1 +1,0 @@
-//Meteor.subscribe('user_self');

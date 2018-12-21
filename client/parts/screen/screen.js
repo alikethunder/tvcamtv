@@ -10,8 +10,8 @@ Template.screen.onCreated(function () {
   let t = this;
   t.subscribe('user_self');
   t.subscribe('translations');
-  t.subscribe('tags');
-  t.l = localStorage.getItem('language') || 'en';
+  
+  t.l = Meteor.user() && Meteor.user().profile && Meteor.user().profile.language || localStorage.getItem('language') || 'en';
   moment.locale(t.l);
   Session.set('language', t.l);
   t.autorun(() => {
@@ -33,13 +33,6 @@ Template.screen.onRendered(function () {
       Meteor.clearInterval(i);
     }
   }, 100);
-
-  t.autorun((computation) => {
-    // insert advertisement, analitycs tags, etc.
-    Tags.find().fetch().forEach((tag) => {
-      $(tag.append_to).append(tag.content);computation.stop();
-    });
-  });
 });
 
 Template.screen.events({
