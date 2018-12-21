@@ -1,8 +1,4 @@
 import {
-  Tags
-} from '../../collections/Tags'
-
-import {
   Translations
 } from '../../collections/Translations'
 
