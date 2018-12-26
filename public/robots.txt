@@ -2,12 +2,9 @@ User-agent: *
 Allow: /en
 Allow: /ru
 Allow: /uk
-Allow: /
 Allow: /sitemap.xml
-Allow: /oferta/ru
-Allow: /oferta/en
-Allow: /oferta/uk
-Allow: /favicon.png
+Allow: /*.png
+Allow: /*.ico
 Disallow: /*
 Sitemap: https://tvcamtv.com/sitemap.xml
 

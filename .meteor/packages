@@ -33,3 +33,4 @@ meteorhacks:ssr
 rzymek:moment-locales
 http
 force-ssl
+dburles:mongo-collection-instances
