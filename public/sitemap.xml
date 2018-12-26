@@ -18,22 +18,4 @@
       <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/ru"/>
       <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/uk"/>
    </url>
-   <url>
-      <loc>https://www.tvcamtv.com/oferta/en</loc>
-      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/oferta/en"/>
-      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/oferta/ru"/>
-      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/oferta/uk"/>
-   </url>
-   <url>
-      <loc>https://www.tvcamtv.com/oferta/ru</loc>
-      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/oferta/en"/>
-      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/oferta/ru"/>
-      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/oferta/uk"/>
-   </url>
-   <url>
-      <loc>https://www.tvcamtv.com/oferta/uk</loc>
-      <xhtml:link rel="alternate" hreflang="en" href="https://www.tvcamtv.com/oferta/en"/>
-      <xhtml:link rel="alternate" hreflang="ru" href="https://www.tvcamtv.com/oferta/ru"/>
-      <xhtml:link rel="alternate" hreflang="uk" href="https://www.tvcamtv.com/oferta/uk"/>
-   </url>
 </urlset> 

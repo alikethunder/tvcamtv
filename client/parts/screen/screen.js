@@ -25,7 +25,7 @@ Template.screen.onRendered(function () {
   let i = Meteor.setInterval(() => {
     if (T9n.get('landing.header') != ">landing.header<") {
       document.title = `tvcamtv - ${T9n.get('landing.header')}`;
-      $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body'));
+      $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
       Meteor.clearInterval(i);
     }
   }, 100);
