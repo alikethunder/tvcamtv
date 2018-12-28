@@ -1,6 +1,6 @@
 @import '../../config/constants.scss'
 
-$width: 310px
+$width: 260px
 
 #leftsidenav
   color: $secondary-color
@@ -38,12 +38,15 @@ $width: 310px
       line-height: 1.7
       font-size: 20px
       align-items: center
-      .expand
+      padding-right: 0
+      i
+        margin-right: 7px
+      .expand, .expand_less
         display: block
         margin-left: auto
+        margin-right: 0
       .expand_less
         display: none
-        margin-left: auto
       &.active
         .expand
           display: none
@@ -63,7 +66,7 @@ $width: 310px
     bottom: 0
     z-index: -1
     .aliexpress_advertisement
-      padding: 5px
+      padding: 3px
       border-top: 1px solid $primary-color
       &>a
         display: flex
