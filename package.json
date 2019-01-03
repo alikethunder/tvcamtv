@@ -13,6 +13,7 @@
     "body-parser": "^1.18.3",
     "http-proxy": "^1.17.0",
     "meteor-node-stubs": "^0.4.1",
+    "path-to-regexp": "^2.4.0",
     "request": "^2.88.0",
     "simple-peer": "^9.1.2",
     "socket.io": "^2.1.1",
