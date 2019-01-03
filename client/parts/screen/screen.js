@@ -1,3 +1,5 @@
+adapter = require('webrtc-adapter/out/adapter');
+
 Template.screen.onCreated(function () {
   let t = this;
   t.subscribe('user_self');

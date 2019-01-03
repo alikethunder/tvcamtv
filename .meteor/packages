@@ -22,8 +22,6 @@ iron:router
 materialize:materialize
 useraccounts:core
 accounts-password@1.5.1
-#accounts-facebook
-#accounts-google
 useraccounts:iron-routing
 useraccounts:materialize
 webapp@1.7.0
@@ -34,3 +32,4 @@ rzymek:moment-locales
 http
 force-ssl
 dburles:mongo-collection-instances
+#appcache
