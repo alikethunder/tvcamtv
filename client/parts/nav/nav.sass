@@ -18,9 +18,15 @@ nav
       border: none
       font-size: 14px
       -moz-appearance: none
-      &:focus
+      padding: 0
+      user-select: none
+      outline: 0
+      &:-moz-focusring
+        color: transparent
+        text-shadow: 0 0 0 #fff
+      &:focus, &:active
         border: none
-        outline: none
+        outline: 0
   .leftsidenav_control
     i
       transition: transform 0.3s ease-in-out
