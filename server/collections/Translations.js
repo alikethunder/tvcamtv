@@ -13,3 +13,7 @@ Translations.find().observeChanges({
 Meteor.publish('translations', function () {
   return Translations.find()
 });
+
+function insertTranslation(){
+  
+}

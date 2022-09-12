@@ -1,7 +1,9 @@
 import socket_io from 'socket.io';
-import {
-  Settings
-} from './collections/Settings'
+import { Settings } from './collections/Settings'
+
+import https from 'https'
+
+import { readFileSync } from 'fs'
 
 const [, , host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
 
@@ -23,21 +25,13 @@ const PORT = Settings.findOne({
 
 if (port != 3000) {
 
-  import https from 'https'
-  import {
-    readFileSync
-  } from 'fs'
+  let { key, cert } = Settings.findOne({ _id: 'ssl_certificates' });
 
-  let {
-    key,
-    cert
-  } = Settings.findOne({
-    _id: 'ssl_certificates'
-  });
   let server = https.createServer({
     key: readFileSync(key),
     cert: readFileSync(cert)
   }).listen(PORT);
+  
   Meteor.startup(() => {
     // Server
     const io = socket_io(server);
