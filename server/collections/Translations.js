@@ -83,7 +83,8 @@ Translations.upsert({
         download: 'download',
         record_in_progress: 'record in progress',
         stop: 'stop recording'
-      }
+      },
+      profile: 'Profile'
     }
   });
 
@@ -156,7 +157,8 @@ Translations.upsert({
         download: 'Завантажити',
         record_in_progress: 'йде запис',
         stop: 'зупинити запис'
-      }
+      },
+      profile: 'Профіль'
     }
   });
 
@@ -229,6 +231,7 @@ Translations.upsert({
         download: 'Загрузить',
         record_in_progress: 'идет запись',
         stop: 'остановить запись'
-      }
+      },
+      profile: 'Профиль'
     }
   });
