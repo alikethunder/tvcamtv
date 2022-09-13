@@ -10,20 +10,27 @@ Template.add_stream.onCreated(function () {
   t.variables = {
     devices: new ReactiveVar({})
   };
-  navigator.mediaDevices.enumerateDevices().then((devices) => {
-    devices.forEach((device, index) => {
-      let d = t.variables.devices.get();
-      d[device.kind] = d[device.kind] || [];
-      d[device.kind].push(device);
-      t.variables.devices.set(d);
-      if (index == devices.length - 1) {
-        Meteor.setTimeout(() => {
-          t.$('select').material_select();
-        }, 0);
-      }
+
+  navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(()=>{
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+      console.log(devices);
+      devices.forEach((device, index) => {
+        console.log(device, index)
+        let d = t.variables.devices.get();
+        d[device.kind] = d[device.kind] || [];
+        d[device.kind].push(device);
+        t.variables.devices.set(d);
+        if (index == devices.length - 1) {
+          Meteor.setTimeout(() => {
+            t.$('select').material_select();
+          }, 0);
+        }
+      });
+      console.log(t.variables.devices.get())
     });
-    //console.log(t.variables.devices.get())
-  });
+  })
+
+  
 
   t.variables.constraints = {
     audio: false,
@@ -39,6 +46,7 @@ Template.add_stream.onRendered(function () {
 
 Template.add_stream.events({
   'change select'(e, t) {
+    console.log(e);
     t.variables.constraints[e.target.id] = !!e.target.value ? {
       deviceId: e.target.value
     } : false;
@@ -65,6 +73,7 @@ Template.add_stream.events({
 
 Template.add_stream.helpers({
   video() {
+    console.log(Template.instance().variables.devices.get()['videoinput'])
     return Template.instance().variables.devices.get()['videoinput']
   },
   audio() {

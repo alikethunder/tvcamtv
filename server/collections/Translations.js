@@ -20,7 +20,7 @@ Translations.upsert({
   {
     translations: {
       landing: {
-        header: 'video surveillance',
+        header: 'Video surveillance',
         start: 'start',
         tabs: {
           1: {
@@ -52,7 +52,25 @@ Translations.upsert({
             body: "Share your streams with other users, subscribe and watch other's streams"
           },
         }
-      }
+      },
+      channel:{
+        add: 'add',
+        channel: 'channel',
+        channels: 'channels',
+        monitor: 'monitor',
+        no_channels: 'no channels',
+        channel_name: 'channel name',
+        select: 'select',
+        without_video: 'without video',
+        without_audio: 'without audio',
+        video_device: "video device",
+        audio_device: "audio device",
+      },
+      name: 'Name',
+      client: {
+        currency: 'Currency'
+      },
+      compability_info: 'compability info'
     }
   });
 
@@ -94,7 +112,25 @@ Translations.upsert({
             body: "Діліться, за бажанням, своїми відеопотоками з іншими, або підписуйтесь та переглядайте чиїсь"
           },
         }
-      }
+      },
+      channel:{
+        add: 'додати',
+        channel: 'канал',
+        channels: 'канали',
+        monitor: 'монiторiнг',
+        no_channels: 'канали відсутні',
+        channel_name: 'Назва каналу',
+        select: 'вибрати',
+        without_video: 'без відео',
+        without_audio: 'без звуку',
+        video_device: "відеопристрiй",
+        audio_device: "аудіо",
+      },
+      name: "Iм'я",
+      client: {
+        currency: 'Валюта'
+      },
+      compability_info: 'інформація про сумісність'
     }
   });
 
@@ -136,6 +172,24 @@ Translations.upsert({
             body: "Делитесь, по желанию, своими видеопотоками с другими, или подписывайтесь и просматривайте чьи-то"
           },
         }
-      }
+      },
+      channel:{
+        add: 'добавить',
+        channel: 'канал',
+        channels: 'каналы',
+        monitor: 'мониторинг',
+        no_channels: 'каналы отсутствуют',
+        channel_name: 'Название канала',
+        select: 'выбрать',
+        without_video: 'без видео',
+        without_audio: 'без звука',
+        video_device: "видеоустройство",
+        audio_device: "аудио",
+      },
+      name: 'Имя',
+      client: {
+        currency: 'Валюта'
+      },
+      compability_info: 'информация о совместимости'
     }
   });
