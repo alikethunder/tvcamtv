@@ -119,9 +119,6 @@ Template.monitor.helpers({
   streams() {
     return Template.instance().streams_cursor.fetch()
   },
-  expired(payed_till) {
-    return payed_till < ServerDate.findOne().date
-  },
   channel_loading(_id) {
     return Template.instance().channels_loading[_id].get()
   }
