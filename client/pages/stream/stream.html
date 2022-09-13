@@ -32,7 +32,7 @@
     </div>
     {{/if}}
     <div class="video_container">
-      {{#if not_expired_or_first expired first}}
+
       <div class="video_plus_rec_buttons">
         {{#if source_available stream.deviceId}}
         {{#if channel_loading}}
@@ -62,7 +62,6 @@
 
         {{#if source_available stream.deviceId}}
         {{#unless channel_loading}}
-        {{#if not_expired_or_first expired first}}
         <div class="rec_buttons">
           {{#if record_in_progress}}
           <span class="record_in_progress red-text">{{t9n 'recording.record_in_progress'}}</span>
@@ -74,11 +73,10 @@
           <button class="btn waves-effect waves-light download_record">{{t9n 'recording.download'}}</button>
           {{/if}}
         </div>
-        {{/if}}
         {{/unless}}
         {{/if}}
       </div>
-      {{/if}}
+
       <div class="paying">
         <!--records-->
         <div class="info">

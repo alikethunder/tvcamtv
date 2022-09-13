@@ -9,14 +9,8 @@ import {
   Streams
 } from '../../collections/Streams'
 import {
-  Sources
-} from '../../collections/Sources'
-import {
   ServerDate
 } from '../../../lib/collections/serverDate';
-import {
-  Prices
-} from '../../collections/Prices'
 import {
   Settings
 } from '../../collections/Settings'
@@ -50,7 +44,6 @@ Template.stream.onCreated(function () {
 
   t.variables = {
     devices: new ReactiveVar({}),
-    expired: new ReactiveVar(false),
     record_in_progress: new ReactiveVar(false),
     recorded_blobs: new ReactiveVar([]),
     record_started: undefined,
@@ -58,7 +51,6 @@ Template.stream.onCreated(function () {
     channel_loading: new ReactiveVar(true)
   };
   t.mediaRecorder;
-  t.liqpay_forms = new ReactiveVar([]);
   t.stream;
 
   navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -80,18 +72,6 @@ Template.stream.onRendered(function () {
   let t = this;
   let serverDate = ServerDate.findOne().date;
 
-  // function to set timeout because of js timeout work only for less then 2^31 milliseconds
-  let st = function (delay) {
-    if (delay > 86400000) {
-      Meteor.setTimeout(() => {
-        st(delay - 86400000)
-      }, 86400000)
-    } else {
-      Meteor.setTimeout(() => {
-        location.reload();
-      }, delay)
-    }
-  }
   t.autorun(() => {
     if (Router.current().params._id) {
       Materialize.updateTextFields();
@@ -104,57 +84,45 @@ Template.stream.onRendered(function () {
       });
       t.subscribe('source', stream.deviceId);
       //console.log('stream : ', stream);
-      let expired_after = stream.payed_till - serverDate;
 
-      t.variables.expired.set(expired_after < 0);
+      if (stream.deviceId == deviceId) {
+        //source pc
+        t.variables.channel_loading.set(false);
+        t.variables.constraints = stream.constraints;
+        start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
+          t.stream = stream;
+        });
+      } else {
+        // receiver pc
+        const PORT = Settings.findOne({
+          _id: 'socket'
+        }).port;
+        t.socket = require('socket.io-client')(PORT);
+        //console.log('socket : ', t.socket);
+        t.socket.on('connect', function () {
+          //console.log('socket connected');
+          t.peerId = new Mongo.ObjectID()._str;
+          Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {
+            let peer = new Peer();
+            peer.on('signal', function (data) {
+              t.socket.emit('signal', {
+                signal: data,
+                to: t.to, //to
+              })
+            });
 
-      if (Tracker.nonreactive(() => {
-          return Template.stream.__helpers.get('first').call()
-        }) || expired_after > 0) {
-        //set timeout and reload if and when payed term will get expired
-        if (expired_after > 0) {
-          st(expired_after);
-        }
+            t.socket.on('signal', function (data) {
+              peer.signal(data.signal);
+              t.to = data.from;
+            });
 
-        if (stream.deviceId == deviceId) {
-          //source pc
-          t.variables.channel_loading.set(false);
-          t.variables.constraints = stream.constraints;
-          start_video(t.stream, t.variables.constraints, 'output').then((stream) => {
-            t.stream = stream;
-          });
-        } else {
-          // receiver pc
-          const PORT = Settings.findOne({
-            _id: 'socket'
-          }).port;
-          t.socket = require('socket.io-client')(PORT);
-          //console.log('socket : ', t.socket);
-          t.socket.on('connect', function () {
-            //console.log('socket connected');
-            t.peerId = new Mongo.ObjectID()._str;
-            Meteor.call('add_receiver', t.peerId, stream._id, stream.deviceId, stream.constraints, t.socket.id, function () {
-              let peer = new Peer();
-              peer.on('signal', function (data) {
-                t.socket.emit('signal', {
-                  signal: data,
-                  to: t.to, //to
-                })
-              });
-
-              t.socket.on('signal', function (data) {
-                peer.signal(data.signal);
-                t.to = data.from;
-              });
-
-              peer.on('stream', function (stream) {
-                t.variables.channel_loading.set(false);
-                t.stream = stream;
-                Meteor.defer(()=>{document.getElementById('output').srcObject = stream;})
-              });
+            peer.on('stream', function (stream) {
+              t.variables.channel_loading.set(false);
+              t.stream = stream;
+              Meteor.defer(() => { document.getElementById('output').srcObject = stream; })
             });
           });
-        }
+        });
       }
     }
   });
@@ -163,8 +131,8 @@ Template.stream.onRendered(function () {
   t.autorun(() => {
     if (Router.current().params._id) {
       if (Tracker.nonreactive(() => {
-          return Template.stream.__helpers.get('stream').call()
-        }).deviceId != deviceId) {
+        return Template.stream.__helpers.get('stream').call()
+      }).deviceId != deviceId) {
         Streams.find({
           _id: Router.current().params._id
         }).observeChanges({
@@ -207,29 +175,13 @@ Template.stream.helpers({
   audio() {
     return Template.instance().variables.devices.get()['audioinput']
   },
-  first() {
-    return Streams.findOne({}, {
-      sort: {
-        created: 1
-      }
-    })._id == Router.current().params._id
-  },
-  expired() {
-    return Template.instance().variables.expired.get()
-  },
-  liqpay_forms() {
-    return Template.instance().liqpay_forms.get()
-  },
   record_in_progress() {
     return Template.instance().variables.record_in_progress.get()
   },
   recording() {
     return Template.instance().variables.recorded_blobs.get().length
   },
-  not_expired_or_first(exp, f) {
-    return !exp || f
-  },
-  channel_loading(){
+  channel_loading() {
     return Template.instance().variables.channel_loading.get()
   }
 });
