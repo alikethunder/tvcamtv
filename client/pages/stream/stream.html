@@ -65,12 +65,21 @@
         <div class="rec_buttons">
           {{#if record_in_progress}}
           <span class="record_in_progress red-text">{{t9n 'recording.record_in_progress'}}</span>
-          <button class="btn waves-effect waves-light stop_record">{{t9n 'recording.stop'}}</button>
+          <button class="btn waves-effect waves-light stop_record">
+            <i class="material-icons left">stop</i>
+            {{t9n 'recording.stop'}}
+          </button>
           {{else}}
-          <button class="btn waves-effect waves-light start_record">{{t9n 'recording.record'}}</button>
+          <button class="btn waves-effect waves-light start_record">
+            <i class="material-icons left red-text">fiber_manual_record</i>
+            {{t9n 'recording.record'}}
+          </button>
           {{/if}}
           {{#if recording}}
-          <button class="btn waves-effect waves-light download_record">{{t9n 'recording.download'}}</button>
+          <button class="btn waves-effect waves-light download_record">
+            <i class="material-icons left">file_download</i>
+            {{t9n 'recording.download'}}
+          </button>
           {{/if}}
         </div>
         {{/unless}}

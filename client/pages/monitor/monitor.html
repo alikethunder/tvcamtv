@@ -3,34 +3,37 @@
     {{#each stream in streams}}
     <div class="video_container">
       <div class="video_name">
-        <a href="/stream/{{stream._id}}" class="name">{{stream.name}}</a>
-        
-        <a href="/stream/{{stream._id}}" class="name green-text">{{t9n 'channel.records'}}</a>
+        <a href="/stream/{{stream._id}}" class="name">
+          {{#if name}}{{name}}{{else}}{{t9n 'channel.channel'}}
+          {{@index}}{{/if}}
+        </a>
+
+        <a href="/stream/{{stream._id}}" class="name">{{t9n 'channel.records'}}</a>
       </div>
       {{#if source_available stream.deviceId}}
-        {{#if channel_loading stream._id}}
-          <span class="green-text loading_info">{{t9n 'channel.channel_available'}}</span>
-          <span class="loading_info">{{t9n 'channel.loading'}}</span>
-          <div class="center preloader_back">
-            <div class="preloader-wrapper active">
-              <div class="spinner-layer spinner-green-only">
-                <div class="circle-clipper left">
-                  <div class="circle"></div>
-                </div>
-                <div class="gap-patch">
-                  <div class="circle"></div>
-                </div>
-                <div class="circle-clipper right">
-                  <div class="circle"></div>
-                </div>
-              </div>
+      {{#if channel_loading stream._id}}
+      <span class="green-text loading_info">{{t9n 'channel.channel_available'}}</span>
+      <span class="loading_info">{{t9n 'channel.loading'}}</span>
+      <div class="center preloader_back">
+        <div class="preloader-wrapper active">
+          <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
             </div>
           </div>
-        {{else}}
-          <video id="{{stream._id}}" autoplay playsinline controls></video>
-        {{/if}}
+        </div>
+      </div>
       {{else}}
-        <span class="red-text loading_info">{{t9n 'channel.channel_unavailable'}}</span>
+      <video id="{{stream._id}}" autoplay playsinline controls></video>
+      {{/if}}
+      {{else}}
+      <span class="red-text loading_info">{{t9n 'channel.channel_unavailable'}}</span>
       {{/if}}
     </div>
     {{/each}}

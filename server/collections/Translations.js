@@ -54,35 +54,35 @@ Translations.upsert({
         }
       },
       channel:{
-        add: 'add',
-        channel: 'channel',
-        channels: 'channels',
-        monitor: 'monitor',
-        no_channels: 'no channels',
-        channel_name: 'channel name',
-        select: 'select',
-        without_video: 'without video',
-        without_audio: 'without audio',
-        video_device: "video device",
-        audio_device: "audio device",
-        records: 'records',
-        loading: 'loading',
-        channel_available: 'channel available',
-        channel_unavailable: 'channel unavailable',
-        no_available_devices: 'no available devices'
+        add: 'Add',
+        channel: 'Channel',
+        channels: 'Channels',
+        monitor: 'Monitor',
+        no_channels: 'No channels',
+        channel_name: 'Channel name',
+        select: 'Select',
+        without_video: 'Without video',
+        without_audio: 'Without audio',
+        video_device: "Video device",
+        audio_device: "Audio device",
+        records: 'Records',
+        loading: 'Loading',
+        channel_available: 'Channel available',
+        channel_unavailable: 'Channel unavailable',
+        no_available_devices: 'No available devices'
       },
       name: 'Name',
       client: {
         currency: 'Currency'
       },
-      compability_info: 'compability info',
-      delete: 'delete',
+      compability_info: 'Compability info',
+      delete: 'Delete',
       recording: {
-        record: 'start recording',
+        record: 'Start recording',
         recordings: 'Recordings',
-        download: 'download',
-        record_in_progress: 'record in progress',
-        stop: 'stop recording'
+        download: 'Download',
+        record_in_progress: 'Record in progress',
+        stop: 'Stop recording'
       },
       profile: 'Profile'
     }
@@ -95,7 +95,7 @@ Translations.upsert({
     translations: {
       landing: {
         header: 'Відеоспостереження',
-        start: 'почати',
+        start: 'Почати',
         tabs: {
           1: {
             header: 'Простi налаштування',
@@ -128,34 +128,34 @@ Translations.upsert({
         }
       },
       channel:{
-        add: 'додати',
-        channel: 'канал',
-        channels: 'канали',
-        monitor: 'монiторiнг',
-        no_channels: 'канали відсутні',
+        add: 'Додати',
+        channel: 'Канал',
+        channels: 'Канали',
+        monitor: 'Монiторiнг',
+        no_channels: 'Канали відсутні',
         channel_name: 'Назва каналу',
-        select: 'вибрати',
-        without_video: 'без відео',
-        without_audio: 'без звуку',
-        video_device: "відеопристрiй",
-        audio_device: "аудіо",
-        records: 'записи',
-        loading: 'загрузка',
-        channel_available: 'канал доступний',
-        channel_unavailable: 'канал недоступний',
-        no_available_devices: 'немає доступних пристроїв'
+        select: 'Вибрати',
+        without_video: 'Без відео',
+        without_audio: 'Без звуку',
+        video_device: "Відеопристрiй",
+        audio_device: "Аудіо",
+        records: 'Записи',
+        loading: 'Загрузка',
+        channel_available: 'Канал доступний',
+        channel_unavailable: 'Канал недоступний',
+        no_available_devices: 'Немає доступних пристроїв'
       },
       name: "Iм'я",
       client: {
         currency: 'Валюта'
       },
-      compability_info: 'інформація про сумісність',
-      delete: 'видалити',
+      compability_info: 'Iнформація про сумісність',
+      delete: 'Видалити',
       recording: {
-        record: 'почати запис',
+        record: 'Почати запис',
         recordings: 'Записи',
         download: 'Завантажити',
-        record_in_progress: 'йде запис',
+        record_in_progress: 'Йде запис',
         stop: 'зупинити запис'
       },
       profile: 'Профіль'
@@ -169,7 +169,7 @@ Translations.upsert({
     translations: {
       landing: {
         header: 'Видеонаблюдение',
-        start: 'начать',
+        start: 'Начать',
         tabs: {
           1: {
             header: 'Простая настройка',
@@ -203,34 +203,34 @@ Translations.upsert({
       },
       channel:{
         add: 'добавить',
-        channel: 'канал',
-        channels: 'каналы',
-        monitor: 'мониторинг',
-        no_channels: 'каналы отсутствуют',
+        channel: 'Канал',
+        channels: 'Каналы',
+        monitor: 'Мониторинг',
+        no_channels: 'Каналы отсутствуют',
         channel_name: 'Название канала',
-        select: 'выбрать',
-        without_video: 'без видео',
-        without_audio: 'без звука',
-        video_device: "видеоустройство",
-        audio_device: "аудио",
-        records: 'записи',
-        loading: 'загрузка',
-        channel_available: 'канал доступен',
-        channel_unavailable: 'канал недоступен',
-        no_available_devices: 'нет доступных устройств'
+        select: 'Выбрать',
+        without_video: 'Без видео',
+        without_audio: 'Без звука',
+        video_device: "Видеоустройство",
+        audio_device: "Аудио",
+        records: 'Записи',
+        loading: 'Загрузка',
+        channel_available: 'Канал доступен',
+        channel_unavailable: 'Канал недоступен',
+        no_available_devices: 'Нет доступных устройств'
       },
       name: 'Имя',
       client: {
         currency: 'Валюта'
       },
-      compability_info: 'информация о совместимости',
-      delete: 'удалить',
+      compability_info: 'Информация о совместимости',
+      delete: 'Удалить',
       recording: {
-        record: 'начать запись',
+        record: 'Начать запись',
         recordings: 'Записи',
         download: 'Загрузить',
-        record_in_progress: 'идет запись',
-        stop: 'остановить запись'
+        record_in_progress: 'Идет запись',
+        stop: 'Остановить запись'
       },
       profile: 'Профиль'
     }
