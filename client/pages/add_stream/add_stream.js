@@ -13,9 +13,9 @@ Template.add_stream.onCreated(function () {
 
   navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(()=>{
     navigator.mediaDevices.enumerateDevices().then((devices) => {
-      console.log(devices);
+      //console.log(devices);
       devices.forEach((device, index) => {
-        console.log(device, index)
+        //console.log(device, index)
         let d = t.variables.devices.get();
         d[device.kind] = d[device.kind] || [];
         d[device.kind].push(device);
@@ -26,11 +26,9 @@ Template.add_stream.onCreated(function () {
           }, 0);
         }
       });
-      console.log(t.variables.devices.get())
+      //console.log(t.variables.devices.get())
     });
   })
-
-  
 
   t.variables.constraints = {
     audio: false,
@@ -46,7 +44,7 @@ Template.add_stream.onRendered(function () {
 
 Template.add_stream.events({
   'change select'(e, t) {
-    console.log(e);
+    //console.log(e);
     t.variables.constraints[e.target.id] = !!e.target.value ? {
       deviceId: e.target.value
     } : false;
@@ -73,7 +71,7 @@ Template.add_stream.events({
 
 Template.add_stream.helpers({
   video() {
-    console.log(Template.instance().variables.devices.get()['videoinput'])
+    //console.log(Template.instance().variables.devices.get()['videoinput'])
     return Template.instance().variables.devices.get()['videoinput']
   },
   audio() {

@@ -178,55 +178,6 @@ Template.stream.onRendered(function () {
       }
     }
   });
-
-  //payment buttons
-  HTTP.get(Settings.findOne({
-    _id: 'currencyUrl'
-  }).url, function (err, res) {
-    //console.log(err, res);
-    if (!err) {
-      let currency = Meteor.user().profile.currency || "USD";
-      let rate;
-      if (currency == "UAH") {
-        rate = res.data.find(rate => rate.base_ccy == "UAH" && rate.ccy == "USD").sale;
-      } else {
-        rate = res.data.find(rate => rate.ccy == "USD" && rate.base_ccy == "UAH").sale / res.data.find(rate => rate.ccy == currency && rate.base_ccy == "UAH").sale;
-      }
-      //console.log(rate);
-      //console.log(currency);
-      let stream = Streams.findOne({
-        _id: Router.current().params._id
-      });
-      Prices.find().fetch().forEach((price) => {
-        //console.log(price);
-        let term = `channel.payment term.${price._id}`;
-        let d = `${T9n.get('channel.payment description')} ${stream.name || stream._id} ${T9n.get(term)}`;
-        let amount = price.price * rate / 97.25 * 100;
-        //console.log(d);
-        Meteor.call('create_form', {
-          'action': 'pay',
-          'amount': Number.parseFloat(amount).toFixed(2),
-          'currency': currency,
-          'description': d,
-          'order_id': `${Router.current().params._id}:${price._id}/${new Mongo.ObjectID()._str}`,
-          'version': '3',
-          language: Session.get('language'),
-          /// test environment
-          //sandbox: 1,
-          result_url: `https://tvcamtv.com/stream/${Router.current().params._id}`,
-          server_url: 'https://tvcamtv.com/liqpay'
-        }, function (err, res) {
-          if (!err) {
-            let f = t.liqpay_forms.get();
-            f.push(res.replace('translate', `${d} - ${Number.parseFloat(amount).toFixed(2)} ${currency}`));
-            t.liqpay_forms.set(f);
-          }
-        });
-      });
-    } else {
-      console.log(err)
-    }
-  });
 });
 
 Template.stream.onDestroyed(function () {

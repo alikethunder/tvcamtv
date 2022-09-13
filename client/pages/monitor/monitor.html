@@ -4,11 +4,8 @@
     <div class="video_container">
       <div class="video_name">
         <a href="/stream/{{stream._id}}" class="name">{{stream.name}}</a>
-        {{#unless @index}}
-        <span class="green-text">{{t9n 'channel.free'}}</span>
-        {{else}}
-        <span class="payed_till">{{t9n 'channel.payed till'}} {{payed_till stream.payed_till}}</span>
-        {{/unless}}
+        
+        <span class="green-text">{{t9n 'channel.records'}}</span>
       </div>
       {{#unless @index}}
       {{#if source_available stream.deviceId}}
