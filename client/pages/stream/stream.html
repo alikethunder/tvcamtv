@@ -63,9 +63,6 @@
         {{#if source_available stream.deviceId}}
         {{#unless channel_loading}}
         {{#if not_expired_or_first expired first}}
-        {{#if record_in_progress}}
-        <div class="record_info">{{t9n 'record_info'}}</div>
-        {{/if}}
         <div class="rec_buttons">
           {{#if record_in_progress}}
           <span class="record_in_progress red-text">{{t9n 'recording.record_in_progress'}}</span>
@@ -83,27 +80,15 @@
       </div>
       {{/if}}
       <div class="paying">
+        <!--records-->
         <div class="info">
-          {{#if first}}
-          <span class="green-text">{{t9n 'channel.free'}}</span>
-          {{else}}
-          <span>{{t9n 'channel.payed till'}} {{payed_till stream.payed_till}}</span>
-          {{#if expired}}
-          <span class="red-text center">{{t9n 'channel.payment expired'}}</span>
-          {{/if}}
-          {{/if}}
+          {{t9n 'recording.recordings'}}
         </div>
-        {{#unless first}}
-        <div class="buttons">
-          {{#each form in liqpay_forms}}
-          {{{form}}}
-          {{/each}}
-        </div>
-        <div class="currency_info">{{{t9n 'currency_info'}}}</div>
-        {{/unless}}
       </div>
     </div>
-    <a class="waves-effect waves-light btn remove_stream red"><i class="material-icons left">remove</i>{{t9n 'delete'}}
-      {{t9n 'channel.channel'}}</a>
+    <a class="waves-effect waves-light btn remove_stream red">
+      {{t9n 'delete'}}
+      {{t9n 'channel.channel'}}
+    </a>
   </div>
 </template>
