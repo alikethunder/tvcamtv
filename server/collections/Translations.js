@@ -65,6 +65,10 @@ Translations.upsert({
         without_audio: 'without audio',
         video_device: "video device",
         audio_device: "audio device",
+        records: 'records',
+        loading: 'loading',
+        channel_available: 'channel available',
+        channel_unavailable: 'channel unavailable'
       },
       name: 'Name',
       client: {
@@ -125,6 +129,10 @@ Translations.upsert({
         without_audio: 'без звуку',
         video_device: "відеопристрiй",
         audio_device: "аудіо",
+        records: 'записи',
+        loading: 'загрузка',
+        channel_available: 'канал доступний',
+        channel_unavailable: 'канал недоступний'
       },
       name: "Iм'я",
       client: {
@@ -185,6 +193,10 @@ Translations.upsert({
         without_audio: 'без звука',
         video_device: "видеоустройство",
         audio_device: "аудио",
+        records: 'записи',
+        loading: 'загрузка',
+        channel_available: 'канал доступен',
+        channel_unavailable: 'канал недоступен'
       },
       name: 'Имя',
       client: {

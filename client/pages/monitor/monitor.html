@@ -5,7 +5,7 @@
       <div class="video_name">
         <a href="/stream/{{stream._id}}" class="name">{{stream.name}}</a>
         
-        <span class="green-text">{{t9n 'channel.records'}}</span>
+        <a href="/stream/{{stream._id}}" class="name green-text">{{t9n 'channel.records'}}</a>
       </div>
       {{#unless @index}}
       {{#if source_available stream.deviceId}}
