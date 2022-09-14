@@ -7,17 +7,11 @@ import { readFileSync } from 'fs'
 
 const [, , host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
 
-if (
-  !Settings.findOne({
-    _id: 'socket'
-  })
-) {
-  Settings.insert({
-    _id: 'socket',
-    port: 'http://localhost:1745', //'https://tvcamtv.com:1745'
-    server_port: 1745
-  })
-}
+Settings.upsert({
+  _id: 'socket',
+  port: 'http://localhost:1745', //'https://tvcamtv.com:1745'
+  server_port: 1745
+});
 
 const PORT = Settings.findOne({
   _id: 'socket'
@@ -25,13 +19,14 @@ const PORT = Settings.findOne({
 
 if (port != 3000) {
 
+  //path to key, cert in system
   let { key, cert } = Settings.findOne({ _id: 'ssl_certificates' });
 
   let server = https.createServer({
     key: readFileSync(key),
     cert: readFileSync(cert)
   }).listen(PORT);
-  
+
   Meteor.startup(() => {
     // Server
     const io = socket_io(server);
