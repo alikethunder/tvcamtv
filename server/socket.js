@@ -9,9 +9,19 @@ const [, , host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)
 
 Settings.upsert({
   _id: 'socket',
-  port: 'http://localhost:1745', //'https://tvcamtv.com:1745'
-  server_port: 1745
-});
+  },
+  {
+    port: 'http://localhost:1745', //'https://tvcamtv.com:1745'
+    server_port: 1745
+  });
+
+Settings.upsert({
+  _id: 'ssl_certificates',
+  },
+  {
+    key: '/etc/letsencrypt/live/cam24.site/privkey.pem',
+    cert: '/etc/letsencrypt/live/cam24.site/fullchain.pem'
+  });
 
 const PORT = Settings.findOne({
   _id: 'socket'

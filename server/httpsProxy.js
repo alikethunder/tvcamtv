@@ -1,13 +1,21 @@
-import {readFileSync} from 'fs'
+import { readFileSync } from 'fs'
 import httpProxy from 'http-proxy'
-import {Settings} from './collections/Settings'
+import { Settings } from './collections/Settings'
 
-const [,, host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
+const [, , host, port] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
+
+Settings.upsert({
+  _id: 'ssl_certificates',
+  },
+  {
+    key: '/etc/letsencrypt/live/cam24.site/privkey.pem',
+    cert: '/etc/letsencrypt/live/cam24.site/fullchain.pem'
+  });
 
 // if not developer session
-if (port != 3000){
-  
-  let { key, cert } = Settings.findOne({_id: 'ssl_certificates'});
+if (port != 3000) {
+
+  let { key, cert } = Settings.findOne({ _id: 'ssl_certificates' });
   httpProxy.createServer({
     target: {
       host,

@@ -202,7 +202,7 @@ Translations.upsert({
         }
       },
       channel:{
-        add: 'добавить',
+        add: 'Добавить',
         channel: 'Канал',
         channels: 'Каналы',
         monitor: 'Мониторинг',
