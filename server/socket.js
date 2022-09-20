@@ -11,7 +11,7 @@ Settings.upsert({
   _id: 'socket',
   },
   {
-    port: 'http://localhost:1745', //'https://tvcamtv.com:1745'
+    port: 'https://cam24.site', //'http://localhost:1745', //'https://tvcamtv.com:1745'
     server_port: 1745
   });
 
