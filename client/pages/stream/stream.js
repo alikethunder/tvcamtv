@@ -97,7 +97,7 @@ Template.stream.onRendered(function () {
         const {PORT} = Settings.findOne({
           _id: 'socket'
         });
-        t.socket = require('socket.io-client')(`${window.location.origin}:${PORT}`);
+        t.socket = require('socket.io-client')(`${window.location.protocol}//${window.location.hostname}:${PORT}`);
         //console.log('socket : ', t.socket);
         t.socket.on('connect', function () {
           //console.log('socket connected');

@@ -42,7 +42,7 @@ Template.source.onRendered(function () {
       //console.log('peer added : ', _id, peer);
       //start socket
       t.connections[_id] = {};
-      t.connections[_id].socket = io(`${window.location.origin}:${PORT}`);
+      t.connections[_id].socket = io(`${window.location.protocol}//${window.location.hostname}:${PORT}`);
       //console.log('socket : ', t.connections[_id].socket);
       t.connections[_id].socket.on('connect', function () {
         //console.log(t.connections[_id].socket.id);

@@ -45,7 +45,7 @@ Template.monitor.onRendered(function () {
     if (!index || stream.payed_till > serverDate) {
 
       t.sockets[stream._id] = {
-        socket: require('socket.io-client')(`${window.location.origin}:${PORT}`),
+        socket: require('socket.io-client')(`${window.location.protocol}//${window.location.hostname}:${PORT}`),
         peerId: '',
         to: '',
       };
