@@ -36,16 +36,16 @@ Template.monitor.onCreated(function () {
 Template.monitor.onRendered(function () {
   let t = this;
 
-  const PORT = Settings.findOne({
+  const {PORT} = Settings.findOne({
     _id: 'socket'
-  }).port;
+  });
   let serverDate = ServerDate.findOne().date;
   t.streams_cursor.fetch().forEach((stream, index) => {
     //console.log(stream, index);
     if (!index || stream.payed_till > serverDate) {
 
       t.sockets[stream._id] = {
-        socket: require('socket.io-client')(PORT),
+        socket: require('socket.io-client')(`${window.location.origin}:${PORT}`),
         peerId: '',
         to: '',
       };

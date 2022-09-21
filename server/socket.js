@@ -11,8 +11,8 @@ Settings.upsert({
   _id: 'socket',
   },
   {
-    port: 'https://cam24.site', //'http://localhost:1745', //'https://tvcamtv.com:1745'
-    server_port: 1745
+    //port: 'https://cam24.site', //'http://localhost:1745', //'https://tvcamtv.com:1745'
+    PORT: 1745
   });
 
 Settings.upsert({
@@ -23,9 +23,9 @@ Settings.upsert({
     cert: '/etc/letsencrypt/live/cam24.site/fullchain.pem'
   });
 
-const PORT = Settings.findOne({
+const {PORT} = Settings.findOne({
   _id: 'socket'
-}).server_port;
+});
 
 if (port != 3000) {
 

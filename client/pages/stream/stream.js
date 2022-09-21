@@ -94,10 +94,10 @@ Template.stream.onRendered(function () {
         });
       } else {
         // receiver pc
-        const PORT = Settings.findOne({
+        const {PORT} = Settings.findOne({
           _id: 'socket'
-        }).port;
-        t.socket = require('socket.io-client')(PORT);
+        });
+        t.socket = require('socket.io-client')(`${window.location.origin}:${PORT}`);
         //console.log('socket : ', t.socket);
         t.socket.on('connect', function () {
           //console.log('socket connected');
