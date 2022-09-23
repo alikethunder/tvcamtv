@@ -21,17 +21,17 @@ Template.nav.onRendered(function () {
 
   let i = Meteor.setInterval(() => {
     if (T9n.get('landing.header') != ">landing.header<") {
-      document.title = `tvcamtv - ${T9n.get('landing.header')}`;
+      document.title = `cam24 - ${T9n.get('landing.header')}`;
       $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
 
       $('meta[property="og:description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
       $('meta[property="og:title"]').attr("content", T9n.get('landing.header'));
       $('meta[property="og:locale"]').attr("content", l);
-      $('meta[property="og:url"]').attr("content", `https://tvcamtv.com/${l}`);
+      $('meta[property="og:url"]').attr("content", `https://cam24.site/${l}`);
 
       $('meta[name="twitter:title"]').attr("content", T9n.get('landing.header'));
       $('meta[name="twitter:description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
-      $('meta[name="twitter:url"]').attr("content", `https://tvcamtv.com/${l}`);
+      $('meta[name="twitter:url"]').attr("content", `https://cam24.site/${l}`);
       Meteor.clearInterval(i);
     }
   }, 100);
@@ -53,17 +53,17 @@ Template.nav.events({
     Session.set('language', e.target.value);
     localStorage.setItem('language', e.target.value);
     moment.locale(e.target.value);
-    document.title = `tvcamtv - ${T9n.get('landing.header')}`;
+    document.title = `cam24 - ${T9n.get('landing.header')}`;
     $('meta[name="description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
 
     $('meta[property="og:description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
     $('meta[property="og:title"]').attr("content", T9n.get('landing.header'));
     $('meta[property="og:locale"]').attr("content", e.target.value);
-    $('meta[property="og:url"]').attr("content", `https://tvcamtv.com/${e.target.value}`);
+    $('meta[property="og:url"]').attr("content", `https://cam24.site/${e.target.value}`);
 
     $('meta[name="twitter:title"]').attr("content", T9n.get('landing.header'));
     $('meta[name="twitter:description"]').attr("content", T9n.get('landing.tabs.7.body').replace('<br>', '').replace('<i class="material-icons">mood</i>', ''));
-    $('meta[name="twitter:url"]').attr("content", `https://tvcamtv.com/${e.target.value}`);
+    $('meta[name="twitter:url"]').attr("content", `https://cam24.site/${e.target.value}`);
 
     Meteor.call("update_language", e.target.value);
     Meteor.setTimeout(() => {
