@@ -84,7 +84,14 @@ Translations.upsert({
         record_in_progress: 'Record in progress',
         stop: 'Stop recording'
       },
-      profile: 'Profile'
+      profile: 'Profile',
+      "Minimum required length: 6": 'Password must contain minimum 6 symbols',
+      "Required Field" : "Required Field",
+      'error':{
+        accounts: {
+          'Invalid email': 'Please enter correct email'
+        }
+      }
     }
   });
 
@@ -158,7 +165,14 @@ Translations.upsert({
         record_in_progress: 'Йде запис',
         stop: 'зупинити запис'
       },
-      profile: 'Профіль'
+      profile: 'Профіль',
+      "Minimum required length: 6": 'Пароль повинен мати мiнiмум 6 символiв',
+      "Required Field" : "Обов'язкове поле",
+      'error':{
+        accounts: {
+          'Invalid email': 'Будь ласка введiть коректний email'
+        }
+      }
     }
   });
 
@@ -232,6 +246,13 @@ Translations.upsert({
         record_in_progress: 'Идет запись',
         stop: 'Остановить запись'
       },
-      profile: 'Профиль'
+      profile: 'Профиль',
+      "Minimum required length: 6": 'Пароль должен иметь минимум 6 символов',
+      "Required Field" : "Обязательное поле",
+      'error':{
+        accounts: {
+          'Invalid email': 'Пожалуйста введите правильный email'
+        }
+      }
     }
   });
